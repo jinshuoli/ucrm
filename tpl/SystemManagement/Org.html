@@ -1,0 +1,144 @@
+<div class="container" ng-controller="Org">
+    <h3>组织管理：</h3>
+    <!--下面是添加 和 搜索-->
+    <form class="row">
+        <button type="button" class="btn btn-success col-lg-1 butt-add" data-toggle="modal" data-target="#myModalLabelOrgAdd">
+            <span class="glyphicon glyphicon-plus-sign glyphicon-lg"></span> 添加
+        </button>
+        <span class=" col-lg-offset-4 col-lg-2">
+            <label>组织名：</label>
+            <input type="text" class="form-control" ng-model="OrgsearchList.orgName" placeholder="搜索……">
+        </span>
+        <span class="col-lg-2">
+            <label>状态：</label>
+            <select class="form-control" id="status" ng-model="OrgsearchList.status">
+                <option value="">--请选择--</option>
+                <option value="V">有效</option>
+                <option value="I">无效</option>
+                <option value="T">过期</option>
+            </select>
+        </span>
+        <br/>
+        <span class="col-lg-2">
+          <button class="btn btn-default" ng-click="Orgsearch()" type="button"><a href="" class="glyphicon glyphicon-search">搜索</a></button>
+        </span>
+    </form>
+    <br/>
+    <!--下面是添加弹出框的页面-->
+    <div class="modal fade" id="myModalLabelOrgAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabelOrgAdd" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" role="form" name="signUpForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabelOrg">请输入</h4>
+                </div>
+                <div class="modal-body" name="Myformstysem">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">组织名</span>
+                        </div>
+                        <input type="text" class="form-control" name="orgName" ng-model="functionSys_OrgForm.orgName" required>
+                        <!--ng-value是输入框的默认值，ng-model是获取输入框的值-->
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.orgName.$error.required&&signUpForm.orgName.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">状态</span>
+                        </div>
+                        <select class="form-control" name="status" ng-model="functionSys_OrgForm.status" required>
+                            <option name="select" ng-repeat="(key,value) in status" value="{{key}}">{{value}}</option>
+                        </select>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.status.$error.required&&signUpForm.status.$touched">
+                                必选项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="reset" class="btn btn-info" ng-click="functionSys_OrgAddForm()">确认</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--下面是组织修改弹出框的页面-->
+    <div class="modal fade" id="myModalLabelOrgR" tabindex="-1" role="dialog" aria-labelledby="myModalLabelOrgR" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="">请输入</h4>
+                </div>
+                <form class="modal-body" name="Myformstysem">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">组织名</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="func_OrgFormR.orgName" required>
+                        <!--ng-value是输入框的默认值，ng-model是获取输入框的值-->
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">状态</button>
+                        </div>
+                        <select class="form-control" ng-model="func_OrgFormR.status">
+                            <option value="V">有效</option>
+                            <option value="I">无效</option>
+                            <option value="T">过期</option>
+                        </select>
+                    </div>
+                    <br/>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" ng-click="func_OrgFormRTO()" data-dismiss="modal">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <tr>
+            <th>组织名:</th>
+            <th>状态:</th>
+            <th>状态日期:</th>
+            <th>操作:</th>
+        </tr>
+        <tr ng-repeat="data in TdItem">
+            <td>{{data.orgName}}</td>
+            <td ng-switch on="data.status">
+                <span ng-switch-when="V">有效</span>
+                <span ng-switch-when="I">无效</span>
+                <span ng-switch-when="T">过期</span>
+            </td>
+            <td ng-bind="data.statusDate.time|date:'yyyy-MM-dd  hh:mm:ss'"></td>
+            <td>
+                <input type="button" class="btn btn-danger" value="删除" ng-click='OrgdeleteTd({{data.orgId}})'>
+                <!--删除当前行-->
+                <input type="button" class="btn btn-warning" value="修改" ng-click="OrgreviseTd($index)" data-toggle="modal" data-target="#myModalLabelOrgR">
+            </td>
+        </tr>
+    </table>
+    <nav>
+        <ul class="pagination paging pull-right">
+            <li>
+                <a ng-click="Previous()">
+                    <span>上一页</span>
+                </a>
+            </li>
+            <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                <a ng-click="selectPage(page)">{{ page }}</a>
+            </li>
+            <li>
+                <a ng-click="Next()">
+                    <span>下一页</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

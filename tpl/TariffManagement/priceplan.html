@@ -1,0 +1,335 @@
+<div class="container row" ng-controller="priceplan">
+    <h3>资费计划</h3>
+    <hr/>
+    <div class="row">
+        <button type="button" class="btn btn-success col-lg-1 butt-add" data-toggle="modal" data-target="#myModal" ng-click="priceplanAdd()">
+            <span class="glyphicon glyphicon-plus-sign glyphicon-lg"></span> 添加
+        </button>
+        <button type="button" class="btn btn-success col-lg-1 butt-add" data-toggle="modal" data-target="#PackagemyModal" ng-disabled="!yesno" title="请选择您要修改的套餐" ng-click="propertyAdd()"> 添加属性 </button>
+        <span class="col-lg-offset-4 col-lg-2">
+            <label>资费名称：</label>
+            <input type="text" class="form-control" ng-model="searchList.pname" placeholder="搜索……">
+        </span>
+        <span class="col-lg-2">
+            <label>资费类型：</label>
+            <select class="form-control" placeholder="搜索……" ng-model="searchList.ptype">
+               <option value="">——请选择——</option>
+               <option ng-repeat="(key,value) in serviceId" value="{{key}}">{{value}}</option>
+            </select>
+        </span>
+        <br/>
+        <span class="col-lg-1">
+          <button class="btn btn-default" type="button" ng-click="search()"><a href="" class="glyphicon glyphicon-search">搜索</a></button>
+        </span>
+    </div>
+    <br/>
+    <!--下面是资费计划表的表格-->
+    <table class="table table-bordered">
+        <h3>资费计划表:</h3>
+        <tr class="bg-info">
+            <th>选项</th>
+            <th>名称</th>
+            <th>描述</th>
+            <th>状态</th>
+            <th>有效日期</th>
+            <th>失效日期</th>
+            <th>资费类型</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="list in TdItem">
+            <td><span style="display:none">{{postageRadio}}</span>
+                <input type="radio" name="pricePlanId" ng-value="list.priceplanId" ng-model="postageRadio" ng-click="withinPostage(list.priceplanId)">
+            </td>
+            <td ng-bind="list.name"></td>
+            <td ng-bind="list.des"></td>
+            <td ng-switch on="list.status">
+                <span ng-switch-when="V">有效</span>
+                <span ng-switch-when="I">无效</span>
+                <span ng-switch-when="T">注销</span>
+            </td>
+            <td>{{list.effDate.time|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>{{list.expDate.time|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td ng-switch on="list.serviceId">
+                <span ng-repeat="(key,value) in serviceId" ng-show="list.serviceId=={{key}}">{{value}}</span>
+            </td>
+            <td>
+                <input type="button" class="btn btn-danger" value="删除" ng-click='deletePostage(list.priceplanId)'>
+                <!--删除当前行-->
+                <input type="button" class="btn btn-warning" value="修改" ng-click="RevisePostage($index)" data-toggle="modal" data-target="#postageRevise">
+                <!--修改如果不需要，请删除！-->
+            </td>
+        </tr>
+    </table>
+    <!--下面是添加资费弹出框的页面-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <form class="modal-content" role="form" name="signForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="">请输入</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">名称</span>
+                        </div>
+                        <input type="text" class="form-control" name="name" ng-model="pricePlanForm.name" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signForm.name.$error.required&&signForm.name.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">编号</span>
+                        </div>
+                        <input type="text" class="form-control" name="code" ng-model="pricePlanForm.code" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signForm.code.$error.required&&signForm.code.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">描述</span>
+                        </div>
+                        <input type="text" class="form-control" name="des" ng-model="pricePlanForm.des" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signForm.des.$error.required&&signForm.des.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">有效日期</span>
+                        </div>
+                        <input type="text" id="effDate" class="form-control" name="effDate" onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked: function(){$(this).trigger('change')},maxDate:'#F{$dp.$D(\'expDate\')}',minDate:'%y-%M-%d'}) " ng-model="pricePlanForm.effDate" required>
+                        <div class="input-group-btn">
+                            <div class="top-right">
+                                <p class="text-danger glyphicon glyphicon-remove" ng-if="signForm.effDate.$error.required&&signForm.effDate.$touched">
+                                    必选项！</p>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">失效日期</span>
+                        </div>
+                        <input type="text" id="expDate" class="form-control" name="expDate" onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked: function(){$(this).trigger('change')},minDate:'#F{$dp.$D(\'effDate\')}'})" ng-model="pricePlanForm.expDate" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signForm.expDate.$error.required&&signForm.expDate.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">服务</span>
+                        </div>
+                        <select class="form-control" ng-model="pricePlanForm.serviceId" name="serviceId" required>
+                            <option ng-repeat="(key,value) in serviceId" value="{{key}}">{{value}}</option>
+                        </select>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signForm.serviceId.$error.required&&signForm.serviceId.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" ng-click="priceplanTdadd()" data-dismiss="modal">确认</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--下面是修改资费弹出框的页面-->
+    <div class="modal fade" id="postageRevise" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <div class="modal-content">
+                <!--背景、边框、阴影-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myM">请输入</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">名称</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="priRevPosForm.name" required>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">编号</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="priRevPosForm.code">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">描述</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="priRevPosForm.des">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">有效日期</button>
+                        </div>
+                        <input type="text" id="effdate" name="effdate" class="form-control" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked: function(){$(this).trigger('change')},maxDate:'#F{$dp.$D(\'expdate\')}',minDate:'%y-%M-%d'})" ng-model="priRevPosForm.effDate">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">失效日期</button>
+                        </div>
+                        <input type="text" id="expdate" name="expdate" class="form-control" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked: function(){$(this).trigger('change')},minDate:'#F{$dp.$D(\'effdate\')}'})" ng-model="priRevPosForm.expDate">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">服务</button>
+                        </div>
+                        <select class="form-control" id="service">
+                            <option ng-repeat="(key,value) in serviceId" value="{{key}}">{{value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" ng-click="priceplanTdOK()" data-dismiss="modal">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--下面是添加套餐弹出框的页面-->
+    <div class="modal fade" id="PackagemyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <div class="modal-content">
+                <!--背景、边框、阴影-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel11">请选择</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">资费</button>
+                        </div>
+                        <select class="form-control" ng-model="attrId" ng-change="attrChange(attrId)">
+                            <option ng-repeat="x in priceplanSelect" value="{{x.attrId}}">{{x.attrName}}</option>
+                        </select>
+                    </div>
+                    <br/>
+                    <table class="table table-bordered">
+                        <tr class="bg-primary">
+                            <th>ID</th>
+                            <th>属性值</th>
+                            <th>属性值描述</th>
+                        </tr>
+                        <tr ng-repeat="list in attrValueTD">
+                            <td>
+                                <input type="radio" name="attrValueId" ng-value="list.attrValueId" ng-model="PackageRadio" ng-click="withinPackage(PackageRadio)">
+                            </td>
+                            <td ng-bind="list.attrValue"></td>
+                            <td ng-bind="list.attrValueMark"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" ng-disabled="!attr" title="请选择您要选的参数值" ng-click="okPress()" data-dismiss="modal">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--下面是修改套餐弹出框的页面-->
+    <div class="modal fade" id="PackageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <div class="modal-content">
+                <!--背景、边框、阴影-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myPackage">请选择</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">属性名称</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="PackageReviseForm.attrname" ng-disabled="true" />
+                    </div>
+                    <br/>
+                    <table class="table table-responsive">
+                        <tr class="bg-primary">
+                            <th>ID</th>
+                            <th>属性值</th>
+                            <th>属性值描述</th>
+                        </tr>
+                        <tr ng-repeat="list in RevisePackageTD">
+                            <td>
+                                <input type="radio" name="attrValueId" ng-value="list.attrValueId" ng-model="PackageReviseForm.PackageRadio" ng-click="RevisePackageChange(list.attrValueId)">
+                            </td>
+                            <td ng-bind="list.attrValue"></td>
+                            <td ng-bind="list.attrValueMark"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" ng-disabled="!yesno2" ng-click="RevisePackageID()" data-dismiss="modal">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--下面是分页-->
+    <nav>
+        <ul class="pagination paging pull-right" style="margin-top: 0px;">
+            <li>
+                <a ng-click="Previous()">
+                    <span>上一页</span>
+                </a>
+            </li>
+            <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                <a ng-click="selectPage(page)">{{ page }}</a>
+            </li>
+            <li>
+                <a ng-click="Next()">
+                    <span>下一页</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <br/>
+    <!--下面是套餐计划表的表格-->
+    <table class="table table-bordered">
+        <h3>资费计划属性:</h3>
+        <tr class="bg-primary">
+            <th>属性ID</th>
+            <th>属性名称</th>
+            <th>属性值</th>
+            <th>属性值描述</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="list in PackageTD">
+            <td ng-bind="list.propId"></td>
+            <td ng-bind="list.propName"></td>
+            <td ng-bind="list.propValue"></td>
+            <td ng-bind="list.propValueMark"></td>
+            <td>
+                <input type="button" class="btn btn-danger" value="删除" ng-click='deleteAttrId(list.propId,list.propValueId)'>
+                <!--删除当前行-->
+                <input type="button" class="btn btn-warning" value="修改" ng-click="RevisePackage($index,list.propId,list.propName)" data-toggle="modal" data-target="#PackageModal">
+            </td>
+        </tr>
+    </table>
+</div>

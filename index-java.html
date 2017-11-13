@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html ng-app='md1'>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compitable" content="IE=edge,Chrome=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/animate.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="icon" href="img/ico.png">
+    <title>客户关系管理系统</title>
+</head>
+<body style="overflow-x: hidden">
+<!--头部-->
+
+<div class="container-fluid top row">
+    <img class="col-lg-1 col-xs-3" src="img/ico.png" alt="logo"/>
+        <a class="col-lg-3 col-xs-6" href="login.html"><h2>客户关系管理系统</h2></a>
+        <a href="http://101.201.101.70:1024" style="z-index:99" class="col-lg-1 pull-right"><img src="img/home.png"></a>
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only glyphicon glyphicon-align-justify">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
+    <!--人头-->
+    <div class="dropdown">
+        <a href="" id="dropdownMenu1" data-toggle="dropdown">
+           <span  class="glyphicon glyphicon-user  pull-right" style="top:10px;right: 30px;"></span>
+        </a><br /><br /><br />
+        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
+            <li><a href="#/userInfo">个人信息</a></li>
+            <li><a href="#">更改密码</a></li>
+            <li><a href="#">设置</a></li>
+            <li class="divider"></li>
+            <li><a href="sysUser_logOut.action">退出</a></li>
+        </ul>
+    </div>
+</div>
+<!--左侧导航-->
+<div class="container-fluid">
+    <div class="row">
+        <div  id="navbar" class="col-lg-2 col-xs-2 col-sm-2 col-md-2 bg-primary" style="padding-right: 0px; z-index: 3;">
+            <div class="panel-group table-responsive" role="tablist">
+  
+            
+            <s:iterator value="#session.rootList" id="u" >          
+            <div class="panel panel-primary leftMenu" >
+                <div class="panel-heading" id="collapseListGroupHeading${u[4].functionId}" data-toggle="collapse" data-target="#collapseListGroup${u[4].functionId}" role="tab" >
+                  <h3 class="panel-title">  
+                  ${u[4].functionName}
+                       <span class="glyphicon glyphicon-chevron-up right"></span>
+                  </h3>
+                 </div>                     
+                 <s:if test="#u[4].functionId==1">
+                 <div id="collapseListGroup${u[4].functionId}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading${u[4].functionId}">
+                   <ul class="list-group">                           
+                           <s:iterator value="#session.leftList" id="su" status="st" >
+                           <s:if test="#u[4].functionId==#su.parentFunctionId">                  
+                            <li class="list-group-item">
+                             <span class="glyphicon glyphicon-triangle-right"></span>
+                            <a href="${su.target}" target="_top">${su.functionName}</a>
+                            </li>               
+                           </s:if>
+                       </s:iterator>                                      
+                   </ul> 
+                 </div> 
+                 </s:if>
+                 <s:else>
+               <div id="collapseListGroup${u[4].functionId}" class="panel-collapse collapse " role="tabpanel" aria-labelledby="collapseListGroupHeading${u[4].functionId}">
+        
+                   <ul class="list-group">    
+                        <s:iterator value="#session.subList" id="sub" status="st" > 
+                         <s:if test="#u[4].functionId==#sub.parentFunctionId">  
+                        <li class="list-group-item"> 
+                          <span class="glyphicon glyphicon-triangle-right"></span>
+                        <a href="${sub.target}" target="_top">${sub.functionName}</a>   
+                        </li>
+                        </s:if>
+                        </s:iterator>    
+                        </ul>                                 
+                 </div> 
+                 </s:else>
+                 </div> 
+                   </s:iterator>                            
+         <!--      循环导航      -->
+                   
+            <!-- 利用data-target指定要折叠的分组列表 -->
+    
+            </div>
+        </div>
+        <div class="col-lg-10 col-xs-10 col-sm-10 col-md-10">
+            <div ng-view class="page">
+     
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="js/jquery-2.1.4.js"></script>
+    <script src="js/My97DatePicker/WdatePicker.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/highcharts.js"></script>
+    <!--图表文件-->
+    <script src="js/angular-route.js"></script>
+    <script src="js/angular-animate.js"></script>
+    <!--动画文件-->
+    <script src="js/angular-touch.js"></script>
+    <!--触屏文件-->
+    <script src="js/angular-file-upload.min.js"></script>
+    <!--文件上传-->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/sel-l-r.js"></script>
+    <!-- 下拉列表 -->
+    <script src="js/script.js"></script>
+    <script src="js/FileSaver.js"></script>
+    <script src="js/tableExport.js"></script>
+</body>
+</html>

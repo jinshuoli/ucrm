@@ -1,0 +1,146 @@
+<div class="container" ng-controller="product">
+    <h3>产品描述</h3>
+    <hr/>
+    <div class="row">
+        <span class="col-lg-offset-4 col-lg-2">
+            <label>ID：</label>
+            <input type="text" ng-model="SearchForm" class="form-control" placeholder="搜索……" />
+        </span>
+        <span class="col-lg-2">
+            <label>名称：</label>
+            <input type="text" ng-model="SearchForm" class="form-control" placeholder="搜索……" />
+        </span>
+        <span class="col-lg-2">
+            <label>日期：</label>
+            <input type="text" ng-model="SearchForm" class="form-control" placeholder="搜索……" />
+        </span>
+        <br/>
+        <span class="col-lg-1">
+          <button class="btn btn-default" type="button" ng-click="productSearch()"><a href="" class="glyphicon glyphicon-search">搜索</a></button>
+        </span>
+    </div>
+    <br/>
+    <!--产品表格-->
+    <table class="table table-responsive">
+        <tr>
+            <td>ID</td>
+            <td>身份状态</td>
+            <td>身份时间</td>
+            <td>创建时间</td>
+            <td>状态</td>
+            <td>状态日期</td>
+            <td>操作</td>
+        </tr>
+        <tr ng-repeat="data in productTD">
+            <td>
+                <input type="radio" ng-value="data.id" ng-checked="0 == $index" ng-click="withinProduct(data.id)" name="product">
+            </td>
+            <td>{{data.status}}</td>
+            <td>{{data.statusDate}}</td>
+            <td>{{data.createTime}}</td>
+            <td>{{data.state}}</td>
+            <td>{{data.stateDate}}</td>
+            <td>
+                <input type="button" class="btn btn-success" value="添加" ng-click='productTDAdd($index)' data-toggle="modal" data-target="#myModal"> </td>
+        </tr>
+    </table>
+    <!--下面添加是弹出框的页面-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <div class="modal-content">
+                <!--背景、边框、阴影-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel11">请选择</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <span class="col-lg-4">
+                        <label>名称：</label>
+                        <input type="text" ng-model="RelaSearchForm" class="form-control" placeholder="搜索……">
+                    </span>
+                        <span class="col-lg-4">
+                        <label>状态：</label>
+                         <select class="form-control" id="RelaSelect" ng-model="value" ng-change="Avtic(value)">
+                             <option ng-repeat="(key,value) in RelaSelect[0]" value="{{key}}">{{value}}</option>
+                         </select>
+                    </span>
+                        <br/>
+                        <span class="col-lg-1">
+                      <button class="btn btn-default" type="button" ng-click="product_relaSearch()"><a href="" class="glyphicon glyphicon-search">搜索</a></button>
+                    </span>
+                    </div>
+                    <br/>
+                    <table class="table table-responsive">
+                        <tr class="bg-primary">
+                            <th ng-repeat="(x,y) in product_relaTD[0]">{{ x }}</th>
+                        </tr>
+                        <tr ng-repeat="list in product_relaTD" id="Rela">
+                            <td>
+                                <input type="radio" name="id" ng-value="list.id" ng-click="withinProduct_rela(list.id)">
+                            </td>
+                            <td ng-bind="list.status"></td>
+                            <td ng-bind="list.statusDate"></td>
+                            <td ng-bind="list.createTime"></td>
+                            <td ng-bind="list.state"></td>
+                            <td ng-bind="list.stateDate"></td>
+                        </tr>
+                    </table>
+                    <!--下面是分页-->
+                    <nav style="margin-bottom: 80px;">
+                        <ul class="pagination paging pull-right">
+                            <li>
+                                <a ng-click="HomePage()">
+                                    <span>首页</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="Previous()">
+                                    <span>上一页</span>
+                                </a>
+                            </li>
+                            <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                                <a ng-click="selectPage(page)">{{ page }}</a>
+                            </li>
+                            <li>
+                                <a ng-click="Next()">
+                                    <span>下一页</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="End()">
+                                    <span>末页</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="product_relaAddOk()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <h3>产品规划：</h3>
+    <table class="table table-responsive">
+        <tr>
+            <th>ID</th>
+            <th>身份状态</th>
+            <th>身份时间</th>
+            <th>创建时间</th>
+            <th>有效日期</th>
+            <th>输出时间</th>
+        </tr>
+        <tr ng-repeat="list in product_relaTD">
+            <td>{{$index+1}}</td>
+            <td>{{list.status}}</td>
+            <td>{{list.statusDate}}</td>
+            <td>{{list.createTime}}</td>
+            <td>{{list.effDate}}</td>
+            <td>{{list.expDate}}</td>
+        </tr>
+    </table>
+</div>

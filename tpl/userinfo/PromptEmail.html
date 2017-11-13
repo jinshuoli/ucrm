@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>忘记密码-邮箱提示</title>
+	<link rel="stylesheet" type="text/css" href="http://101.201.101.70:1024/assets/style/index.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+	<nav id="nav">
+        <div class="items">
+            <img src="http://101.201.101.70:1024/assets/images/logo.gif" width="60" height="60">
+            <div class="title-item">
+                <h2 style="margin-top: -3px;"><a href="http://101.201.101.70:1024/index.html">号 外 号</a></h2>
+            </div>
+            <div class="tab-item">
+                <a href="http://101.201.101.70:1024/index.html">首页</a>
+            </div>
+            <div class="tab-item">
+                <a href="http://101.201.101.70:1024/views/product.html">产品</a>
+            </div>
+            <div class="tab-item">
+                <a href="http://101.201.101.70:1024/views/price.html">价格</a>
+            </div>
+            <div class="tab-item">
+                <a href="http://101.201.101.70:1024/views/experience.html">体验</a>
+            </div>
+            <div class="tab-item">
+                <a href="http://101.201.101.70:1024/views/APIdoc.html">开发文档</a>
+            </div>
+            <div class="tab-item">
+                <a href="http://101.201.101.70:1024/views/help.html">帮助</a>
+            </div>
+            <div class="right-item">
+                <a class="register" href="http://101.200.221.216:9080/ucrm/">登陆</a>
+            </div>
+            <div class="right-item">
+                <a class="login" href="http://101.200.221.216:9080/ucrm/register_toRegister.action">注册</a>
+            </div>
+        </div>
+    </nav>
+    
+	<section class="wrap">
+		<br>
+		<br>
+		<h1 style="text-align: center;color: #18BD9C;"></h1>
+	</section>
+	<footer class="bottom"><br>
+		<p>© Copyright 2017 号外号平台 All Rights Reserved 号外号(北京)科技有限公司</p>
+		<p>增值电信业务经营许可证：B2-20090494 电信与信息服务业务经营许可证：京ICP证130398号 ICP备案：京ICP备17026061号</p>
+	</footer>
+</body>
+ <script language="javascript" type="text/javascript">
+  var loc = location.href;
+  var n1 = loc.length;//地址的总长度
+  var n2 = loc.indexOf("?");//取得=号的位置
+  var email = loc.substr(n2+1, n1-n2);//从?号后面的内容
+
+  document.getElementsByTagName('h1')[0].innerText = "请到邮箱"+email+", 查看您的找回密码信息！" 
+  </script>
+</html>

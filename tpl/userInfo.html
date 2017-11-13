@@ -1,0 +1,25 @@
+<div class="container" ng-controller="userInfo">
+<br>
+    <div class="panel panel-info">
+        <div class="panel-heading" >
+            <h3 class="panel-title" style="margin-left: 50px;">个人信息</h3>
+        </div>
+        <div class="panel-body" style="margin-left: 80px;">
+            <p>姓名：<span ng-bind="userInfo.name"></span></p>    
+            <p>编码：<span ng-bind="userInfo.code"></span></p>    
+            <p>邮箱：<span ng-bind="userInfo.email"></span></p>    
+            <p>地址：<span ng-bind="userInfo.address"></span></p>                    
+            <p>电话：<span ng-bind="userInfo.tel"></span>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <a href="" ng-click="modifyTel(userInfo)">修改</a>
+            <div ng-show="TelHide" class="input-group">
+                <input type="tel" ng-model="telInfoIn" class="form-control">
+                <div class="input-group-btn">
+                    <span class="btn btn-success" ng-click="ConfirmModify(telInfoIn)">确认修改</span>
+                    <span class="btn btn-default" ng-click="CancelModify()"> 取 消 </span>
+                </div>
+            </div>
+            </p> 
+        </div>
+    </div>
+</div>

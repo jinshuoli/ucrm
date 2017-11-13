@@ -1,0 +1,77 @@
+<div class="container" ng-controller="auditTmp">
+    <div class="row">
+        <h3 class="col-lg-2">模板审核:</h3>
+        <br>
+        <span class="col-lg-offset-5 col-lg-4 form-inline">
+            <label>模 板 类 型：</label>
+            <select class="form-control" ng-model="SearchType" ng-change="TmpType(SearchType)">
+                <option value="">———选择全部———</option>
+                <option value="u"> USSD </option>
+                <option value="s"> SMS </option>
+            </select>
+        </span>
+    </div>
+    <br>
+    <div style="overflow:scroll; height:450px; width: 1100px;">
+        <table class="table table-responsive">
+            <tr class="bg-info">
+                <th>模板ID</th>
+                <th>模板名称</th>
+                <th>模板类型</th>
+                <th>模板内容</th>
+                <th>参数描述</th>
+                <th>模板状态</th>
+                <th>审核</th>
+                <th>审核失败</th>
+            </tr>
+            <tr ng-repeat="list in auditTmpTD">
+                <td ng-bind="list.id"></td>
+                <td ng-bind="list.name"></td>
+                <td ng-bind="list.type"></td>
+                <td ng-bind="list.elemnt"></td>
+                <td ng-bind="list.description"></td>
+                <td ng-bind="list.state"></td>
+                <td>
+                    <input type="button" class="btn btn-warning" ng-click="auditM()" value="审核">
+                </td>
+                <td>
+                    <input type="button" class="btn btn-danger btn-sm" ng-click="failAuditM()" value="失败原因">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- 输入审核模板ID弹出框 -->
+    <div class="modal fade" id="auditModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <label class="h4">请输入模板ID:</label>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" ng-model="TmpID">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button class="btn btn-success" ng-click="confirm(TmpID)" >确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 输入审核失败原因弹出框 -->
+        <div class="modal fade" id="failAuditModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <label class="h4">请输入审核失败原因:</label>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" ng-model="failTmpID">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button class="btn btn-success" ng-click="failConfirm(failTmpID)" >确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,409 @@
+<div class="container" ng-controller="Operator as ctrl">
+    <br/>
+    <ul class="nav nav-tabs" role="tablist" id="myTab">
+        <li role="presentation" class="active"><a href="#Operator" data-toggle="tab" target="_self">操作员管理</a></li>
+        <li role="presentation" ng-click="Jurisdiction()">
+            <a href="#Jurisdiction" data-toggle="tab" target="_self">权限管理</a></li>
+    </ul>
+    <br/>
+    <div class="tab-content">
+        <!--操作员管理-->
+        <div class="tab-pane active" id="Operator">
+            <div class="row">
+                <button type="button" class="btn btn-success col-lg-1 butt-add" data-toggle="modal" data-target="#myModal">
+                    <span class="glyphicon glyphicon-plus-sign glyphicon-lg"></span> 添加
+                </button>
+                <span class=" col-lg-offset-3 col-lg-2">
+            <label>名称：</label>
+            <input type="text" ng-model="OperatorSearch.name" class="form-control" placeholder="搜索……">
+        </span>
+                <span class="col-lg-2">
+            <label>地址：</label>
+            <input type="text" ng-model="OperatorSearch.address" class="form-control" placeholder="搜索……">
+        </span>
+                <span class="col-lg-2">
+            <label>编码：</label>
+            <input type="text" ng-model="OperatorSearch.code" class="form-control" placeholder="搜索……">
+        </span>
+                <br/>
+                <span class="col-lg-1">
+          <button class="btn btn-default" ng-click="OperatorS()" type="button">
+              <a href="" class="glyphicon glyphicon-search">搜索</a>
+          </button>
+        </span>
+            </div>
+            <br/>
+            <table class="table table-striped">
+                <tr>
+                    <th>姓名</th>
+                    <th>编码</th>
+                    <th>性别</th>
+                    <th>邮箱</th>
+                    <th>电话</th>
+                    <th>状态</th>
+                    <th>状态日期</th>
+                    <th>地址</th>
+                    <th>操作</th>
+                </tr>
+                <tr ng-repeat="list in TdItem">
+                    <!-- <td>{{$index+1}}</td> -->
+                    <td>{{list.name}}</td>
+                    <td>{{list.code}}</td>
+                    <td>{{list.sex}}</td>
+                    <td>{{list.email}}</td>
+                    <td>{{list.tel}}</td>
+                    <td>{{list.status}}</td>
+                    <td ng-bind="list.statusDate.time|date:'yyyy-MM-dd  hh:mm:ss'"></td>
+                    <td>{{list.address}}</td>
+                    <td>
+                        <input type="button" class="btn btn-danger" ng-click="deleteOperatorTD(list.userId)" value="删除">
+                        <input type="button" class="btn btn-warning" ng-click="Revise($index)" data-toggle="modal" data-target="#myModarevise" value="修改">
+                    </td>
+                </tr>
+            </table>
+            <!--下面是弹出框的页面-->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <!--定位、宽高-->
+                    <div class="modal-content">
+                        <!--背景、边框、阴影-->
+                        <div class="modal-header bg-primary">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h3 class="modal-title" id="myModalLabel11">添加操作员</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" role="form" name="signUpForm">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">用户名</button>
+                                    </div>
+                                    <input type="text" class="form-control" id="firstname1" placeholder="请输入用户名" name="name" ng-model="userdata.name" ng-minlength="4" ng-maxlength="32" required>
+                                    <div class="top-right">
+                                        <p class="glyphicon glyphicon-ok input_result text-success" ng-if="signUpForm.name.$valid"></p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.name.$error.required&&signUpForm.name.$touched">
+                                            用户名不能为空！</p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="(signUpForm.name.$error.minlength||signUpForm.name.$error.maxlength)&&
+                                                signUpForm.name.$touched">用户名长度应在4—32之间</p>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">操作员编码</button>
+                                    </div>
+                                    <input type="text" class="form-control" id="code" placeholder="请输入编码" name="code" ng-model="userdata.code" ng-maxlength="32" required>
+                                    <div class="top-right">
+                                        <p class="glyphicon glyphicon-ok input_result text-success" ng-if="signUpForm.code.$valid"></p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.code.$error.required&&signUpForm.code.$touched">
+                                            操作员不能为空！</p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="(signUpForm.code.$error.minlength||signUpForm.code.$error.maxlength)&&
+                                        signUpForm.code.$touched">操作员长度应在4—32之间</p>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="input-group row">
+                                    <div class="input-group-btn">
+                                        <label for="firstname1" class="control-label col-lg-offset-2">
+                                            <button class="btn btn-default">性别：</button>
+                                        </label>
+                                    </div>
+                                    <label for="boy" class="control-label col-lg-offset-1">
+                                        <input type="radio" id="boy" name="sex" ng-model="userdata.sex" value="man">
+                                        <!--ng-checked="true"-->
+                                        男</label>
+                                    <label for="girl" class="control-label col-lg-offset-1">
+                                        <input type="radio" id="girl" name="sex" ng-model="userdata.sex" value="woman"> 女
+                                    </label>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">密码</button>
+                                    </div>
+                                    <input class="form-control" id="password1" placeholder="请输入密码" type="password" name="password" ng-model="userdata.password" ng-minlength="6" ng-maxlength="28" required>
+                                    <input type="password" name="password" style="display:none">
+                                    <div class="top-right">
+                                        <p class="glyphicon glyphicon-ok input_result text-success" ng-if="signUpForm.password.$valid"></p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.password.$error.required&&signUpForm.password.$touched">
+                                            密码不能为空！</p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="(signUpForm.password.$error.minlength||signUpForm.password.$error.maxlength)&&signUpForm.password.$touched">
+                                            密码应在6—28之间！</p>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">确认密码</button>
+                                    </div>
+                                    <input class="form-control" id="password2" placeholder="请确认密码" type="password" name="password2" ng-model="userdata.password2" compare="userdata.password" required>
+                                    <div class="top-right">
+                                        <p class="glyphicon glyphicon-ok input_result text-success" ng-if="signUpForm.password2.$valid"></p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.password2.$error.compare&&signUpForm.password2.$touched">
+                                            两次密码输入不一致！</p>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">状态</button>
+                                    </div>
+                                    <select name="" class="form-control" ng-model="userdata.status">
+                                        <option value="V">有效</option>
+                                        <option value="I">无效</option>
+                                        <option value="T">过期</option>
+                                    </select>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">组织名称</button>
+                                    </div>
+                                    <select name="" class="form-control" ng-model="userdata.orgId">
+                                        <option ng-repeat="(key,value) in orgName" value="{{key}}">{{value}}</option>
+                                    </select>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">邮箱</button>
+                                    </div>
+                                    <input class="form-control" id="email" placeholder="请输入邮箱" type="email" name="email" ng-model="userdata.email" ng-minlength="6" ng-maxlength="28" required>
+                                    <div class="top-right">
+                                        <p class="glyphicon glyphicon-ok input_result text-success" ng-if="signUpForm.email.$valid"></p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.email.$error.required&&signUpForm.email.$touched">
+                                            邮箱不能为空！</p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.email.$error.email&&signUpForm.email.$touched">邮箱格式不正确!</p>
+                                        <!--$touched失去焦点再做判断-->
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">电话</button>
+                                    </div>
+                                    <input class="form-control" id="tel" placeholder="请输入电话" type="tel" name="tel" ng-model="userdata.tel" ng-minlength="11" ng-maxlength="11" ng-pattern="/^1\d{10}$/" required>
+                                    <div class="top-right">
+                                        <p class="glyphicon glyphicon-ok input_result text-success" ng-if="signUpForm.tel.$valid"></p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.tel.$error.required&&signUpForm.tel.$touched">电话不能为空！</p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="(signUpForm.tel.$error.minlength||signUpForm.tel.$error.maxlength||signUpForm.tel.$error.pattern)&&signUpForm.tel.$touched">
+                                            请输入有效手机号!</p>
+                                        <!--$touched失去焦点再做判断-->
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">地址</button>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="请输入地址" ng-model="userdata.address">
+                                </div>
+                                <br/>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-6">
+                                    <input type="checkbox" id="myAgree" ng-model="myAgree" />
+                                    <label for="myAgree" class="control-label">我同意本站条款！！！</label>
+                                    <button class="btn btn-danger" type="reset" ng-disabled="!myAgree" ng-click="submitForm()">立即注册
+                                    </button>
+                                    <!--ng-disabled=“true”时禁用-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--下面是修改弹出框的页面-->
+            <div class="modal fade" id="myModarevise" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <!--定位、宽高-->
+                    <div class="modal-content">
+                        <!--背景、边框、阴影-->
+                        <div class="modal-header bg-primary">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h3 class="modal-title" id="myModalLabe11">修改操作员</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" role="form" name="ReviseForm">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">用户名</button>
+                                    </div>
+                                    <input type="text" class="form-control" id="firstname" placeholder="请输入用户名" name="name" ng-model="userReviseForm.name" ng-minlength="4" ng-maxlength="32" required>
+                                    <div class="top-right">
+                                        <p class="glyphicon glyphicon-ok input_result text-success" ng-if="ReviseForm.name.$valid"></p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="ReviseForm.name.$error.required&&ReviseForm.name.$touched">
+                                            用户名不能为空！</p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="(ReviseForm.name.$error.minlength||ReviseForm.name.$error.maxlength)&&ReviseForm.username.$touched">用户名长度应在4—32之间</p>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">操作员编码</button>
+                                    </div>
+                                    <input type="text" class="form-control" id="code" placeholder="请输入编码" name="code" ng-model="userReviseForm.code" ng-maxlength="32" required>
+                                    <div class="top-right">
+                                        <p class="glyphicon glyphicon-ok input_result text-success" ng-if="ReviseForm.code.$valid"></p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="ReviseForm.code.$error.required&&ReviseForm.code.$touched">
+                                            操作员不能为空！</p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="(ReviseForm.code.$error.minlength||ReviseForm.code.$error.maxlength)&&
+                                        ReviseForm.code.$touched">操作员长度应在4—32之间</p>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="input-group row">
+                                    <div class="input-group-btn">
+                                        <label for="firstname1" class="control-label col-lg-offset-2">
+                                            <button class="btn btn-default">性别：</button>
+                                        </label>
+                                    </div>
+                                    <label for="boyy" class="control-label col-lg-offset-1">
+                                        <input type="radio" id="boyy" name="sex" ng-model="userReviseForm.sex" value="man">
+                                        <!--ng-checked="true"-->
+                                        男</label>
+                                    <label for="girll" class="control-label col-lg-offset-1">
+                                        <input type="radio" id="girll" name="sex" ng-model="userReviseForm.sex" value="woman"> 女
+                                    </label>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">密码</button>
+                                    </div>
+                                    <input type="password" name="password" style="display:none">
+                                    <input class="form-control" id="password11" placeholder="请输入密码" type="password" name="password" ng-model="userReviseForm.password" ng-minlength="6" ng-maxlength="28" required>
+                                    <div class="top-right">
+                                        <p class="glyphicon glyphicon-ok input_result text-success" ng-if="ReviseForm.password.$valid"></p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="ReviseForm.password.$error.required&&ReviseForm.password.$touched">
+                                            密码不能为空！</p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="(ReviseForm.password.$error.minlength||ReviseForm.password.$error.maxlength)&&ReviseForm.password.$touched">
+                                            密码应在6—28之间！</p>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">确认密码</button>
+                                    </div>
+                                    <input class="form-control" id="password2" placeholder="请确认密码" type="password" name="password2" ng-model="userReviseForm.password2" compare="userReviseForm.password" required>
+                                    <div class="top-right">
+                                        <p class="glyphicon glyphicon-ok input_result text-success" ng-if="ReviseForm.password2.$valid"></p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="ReviseForm.password2.$error.compare&&ReviseForm.password2.$touched">
+                                            两次密码输入不一致！</p>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">状态</button>
+                                    </div>
+                                    <select name="" class="form-control" ng-model="userReviseForm.status">
+                                        <option value="V">有效</option>
+                                        <option value="I">无效</option>
+                                        <option value="T">过期</option>
+                                    </select>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">组织名称</button>
+                                    </div>
+                                    <select name="" class="form-control" id="orgOrg">
+                                        <option ng-repeat="(key,value) in orgName" value="{{key}}">{{value}}</option>
+                                    </select>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">邮箱</button>
+                                    </div>
+                                    <input class="form-control" placeholder="请输入邮箱" type="email" name="email" ng-model="userReviseForm.email" ng-minlength="6" ng-maxlength="28" required>
+                                    <div class="top-right">
+                                        <p class="glyphicon glyphicon-ok input_result text-success" ng-if="ReviseForm.email.$valid"></p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="ReviseForm.email.$error.required&&ReviseForm.email.$touched">
+                                            邮箱不能为空！</p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="ReviseForm.email.$error.email&&ReviseForm.email.$touched">邮箱格式不正确!</p>
+                                        <!--$touched失去焦点再做判断-->
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">电话</button>
+                                    </div>
+                                    <input class="form-control" id="tell" placeholder="请输入电话" type="tel" name="tel" ng-model="userReviseForm.tel" ng-minlength="11" ng-maxlength="11" ng-pattern="!/^1[3|4|5|8][0-9]\d{4,8}$/" required>
+                                    <div class="top-right">
+                                        <p class="glyphicon glyphicon-ok input_result text-success" ng-if="ReviseForm.tel.$valid"></p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="ReviseForm.tel.$error.required&&ReviseForm.tel.$touched">电话不能为空！</p>
+                                        <p class="text-danger glyphicon glyphicon-remove" ng-if="(ReviseForm.tel.$error.minlength||ReviseForm.tel.$error.maxlength||ReviseForm.tel.$error.pattern)&&ReviseForm.tel.$touched">
+                                            请输入有效手机号!</p>
+                                        <!--$touched失去焦点再做判断-->
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default">地址</button>
+                                    </div>
+                                    <input type="text" class="form-control" ng-model="userReviseForm.address" />
+                                </div>
+                                <br/>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-info" ng-click="userRevise()" data-dismiss="modal">
+                                确定修改
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav>
+                <ul class="pagination paging pull-right">
+                    <li>
+                        <a ng-click="Previous()">
+                            <span>上一页</span>
+                        </a>
+                    </li>
+                    <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                        <a ng-click="selectPage(page)">{{ page }}</a>
+                    </li>
+                    <li>
+                        <a ng-click="Next()">
+                            <span>下一页</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <!--权限管理-->
+        <div class="tab-pane" id="Jurisdiction">
+            <div class="container">
+                <br/>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <select id="sel" change="action()" class="form-control">
+                            <option value="">——请选择——</option>
+                            <option ng-repeat="(key,value) in roleId" value="{{key}}">{{value}}</option>
+                        </select>
+                    </div>
+                    <br/>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <h2 class="col-lg-offset-2 col-lg-3" style="display: inline"><span class="glyphicon glyphicon-edit">未分配角色</span></h2>
+                <h2 class="col-lg-offset-1 col-lg-3" style="display: inline">&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-share">已分配角色</span></h2>
+            </div>
+            <br/>
+            <div select-l-r="ctrl.noUserRole" select-l-r-values="ctrl.userRole" select-l-r-change="ctrl.userChange(values)"></div>
+            <br/>
+            <input type="button" class="btn btn-lg bg-success row col-lg-offset-10" ng-click="Preservation()" value="保存" />
+        </div>
+    </div>
+</div>
+</div>
+</div>

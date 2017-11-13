@@ -1,0 +1,284 @@
+<div class="container" ng-controller="Authentication">
+    <div class="Authentication">
+       <h1 class="h2">认证信息</h1>
+       <hr>
+       <div class="pannel">
+           <ul style="list-style: none;background-color: #FEFAF1; line-height: 2em;">
+                <li>1、公司认证较个人认证能使用更多的功能;</li>
+                <li>2、认证名将作为今后开具发票的抬头，个人认证可根据需要升级为公司认证;</li>
+                <li>3、16:30分前提交的认证将在当日审核完成，节假日顺延。</li>
+           </ul>
+       </div>
+        <form role="form" name="signUpForm" style="background-color: #F4FAFD;" >
+               <div class="modal-header">
+                    <h3 class="modal-title">资质认证信息:</h3>
+               </div>
+                <div class="modal-body col-md-offset-2 col-md-6">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">开发者类型:</span>
+                        </div>
+                       <div style="margin-left: 200px;">
+                            <input type="radio" id="personal" name="developer" value="personal" ng-model="AuthenticationForm.developer">
+                            <label for="personal">个人</label>
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                             <input type="radio" id="enterprise" name="developer" value="enterprise" ng-model="AuthenticationForm.developer" ng-checked="true">
+                            <label for="enterprise">企业</label>
+                       </div>
+                    </div>
+                    <br/>
+                    <!--显示个人开发者表单-->
+                    <div class="personal" ng-if="AuthenticationForm.developer == 'personal' "> 
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <sapn class="btn btn-default">真实姓名</sapn>
+                            </div>
+                            <input type="text" class="form-control" name="RealName" ng-model="AuthenticationForm.RealName" placeholder="请输入与身份证或护照相符的真实姓名" required>
+                            <div class="top-right">
+                                <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.RealName.$error.required&&signUpForm.RealName.$touched">
+                                    必填项！</p>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <span class="btn btn-default">证件类型</span>
+                            </div>
+                            <select name="paperType" class="form-control" ng-model="AuthenticationForm.paperType" required>
+                                <option value="DP" ng-selected="true" >身份证</option>
+                                <option value="DN">护照</option>
+                            </select>
+                            <div class="top-right">
+                                <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.paperType.$error.required&&signUpForm.paperType.$touched">
+                                    必填项！</p>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <span class="btn btn-default">证件号码</span>
+                            </div>
+                            <input type="text" class="form-control" name="IDnumber" ng-model="AuthenticationForm.IDnumber" placeholder="请输入与身份证号或护照编号" required>
+                            <div class="top-right">
+                                <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.IDnumber.$error.required&&signUpForm.IDnumber.$touched">
+                                    必选项！</p>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <span class="btn btn-default">证件照片</span>
+                            </div>
+                            <input type="file" ng-file-select="postPhoto($files)"
+                            name="CertificatePhoto" class="form-control"
+                            placeholder="请上传身份证或护照" >
+                        </div>
+                        <hr>
+                            <p>请使用真实有效的身份证或护照按下图示例拍照，需确保证件内容及脸部清晰,上传图片支持2M以内的PNG、JPG、GIF格式;</p>
+                            <p>Mac OS系统请使用新版Firefox浏览器上传，也可联系云通讯客服协助上传</p>
+                            <p>查看示例：</p>
+                            <img src="http://www.yuntongxun.com/mem/images/pic_bg.jpg" alt="证件demo">
+                        <br/>
+                    </div>
+
+                   <!--显示企业开发者表单-->
+                    <div class="enterprise" ng-if="AuthenticationForm.developer !== 'personal' "> 
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <sapn class="btn btn-default">公司名称</sapn>
+                            </div>
+                            <input type="text" class="form-control" name="CompanyName" ng-model="AuthenticationForm.CompanyName" required>
+                            <div class="top-right">
+                                <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.CompanyName.$error.required&&signUpForm.CompanyName.$touched">
+                                    必填项！</p>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <sapn class="btn btn-default">公司地址</sapn>
+                            </div>
+                            <input type="text" class="form-control" name="CompanyAddress" ng-model="AuthenticationForm.CompanyAddress" required>
+                            <div class="top-right">
+                                <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.CompanyAddress.$error.required&&signUpForm.CompanyAddress.$touched">
+                                    必填项！</p>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <span class="btn btn-default">所属行业</span>
+                            </div>
+                            <select name="SubordinateIndustry" class="form-control" ng-model="AuthenticationForm.SubordinateIndustry" required>
+                                <option value="Industry1" ng-selected="true">所属行业</option>
+                                <option value="Industry2">互联网金融</option>
+                                <option value="Industry3">游戏</option>
+                                <option value="Industry4">教育培训</option>
+                                <option value="Industry5">银行/保险</option>
+                                <option value="Industry6">电商</option>
+                                <option value="Industry7">社交</option>
+                                <option value="Industry8">零售/贸易</option>
+                                <option value="Industry9">交通/物流</option>
+                                <option value="Industry10">房地产 </option>
+                                <option value="Industry11">政府/企事业单位</option>
+                                <option value="Industry12">医疗健康</option>
+                                <option value="Industry13">物联网/智能硬件</option>
+                                <option value="Industry14">门户/论坛/网站</option>
+                                <option value="Industry15">生活服务</option>
+                                <option value="Industry16">文化传媒</option>
+                                <option value="Industry17">农业/能源/电气</option>
+                                <option value="Industry18">IT/系统集成/软件外包</option>
+                                <option value="Industry19">企业软件服务</option>
+                                <option value="Industry20">其他</option>
+                            </select>
+                            <div class="top-right">
+                                <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.SubordinateIndustry.$error.required&&signUpForm.SubordinateIndustry.$touched">
+                                    必填项！</p>
+                            </div>
+                        </div>
+                        <br><hr><br/>
+                        <!-- 证件类型 -->
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <span class="btn btn-default">证件类型:</span>
+                            </div>
+                            <div style="margin-left: 50px;">
+                                <input type="radio" id="ThreeInOneTiops" name="DocumentType" value="ThreeInOneTiops"  ng-model="AuthenticationForm.DocumentType"/>
+                                <label for="ThreeInOneTiops">三证合一(一照一码)</label>
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <input type="radio" id="ThreeInOne" name="DocumentType" value="ThreeInOne" ng-model="AuthenticationForm.DocumentType">
+                                <label for="ThreeInOne">三证合一</label>
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <input type="radio" id="ThreeSeparation" name="DocumentType" value="ThreeSeparation" ng-model="AuthenticationForm.DocumentType" >
+                                <label for="ThreeSeparation">三证分离</label>
+                            </div>
+                        </div>
+                        <br>
+                        <!-- 三证合一(一照一码) 'ThreeInOneTiops'-->
+                        <div class="ThreeInOneTiops" ng-if="AuthenticationForm.DocumentType !== 'ThreeInOne'  && AuthenticationForm.DocumentType !== 'ThreeSeparation' ">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">统一社会信用代码</span>
+                                </div>
+                                <input type="text" class="form-control" 
+                                name="UniformCode" ng-model="AuthenticationForm.UniformCode" max="18" placeholder="18位数字或者大写英文字母" required>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.UniformCode.$error.required&&signUpForm.UniformCode.$touched">
+                                        必选项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">营业执照</span>
+                                </div>
+                                <input type="file" ng-file-select="postBLicense($files)"
+                                name="CertificateBLicense" class="form-control">
+                            </div>
+                            <br>
+                            <div><p>将原件或盖章的复印件扫描、拍照后上传，文件支持2M以内的PNG、JPG或GIF。</p><p>mac os 系统请使用新版firefox 浏览器上传，也可联系云通讯客服协助上传。</p>
+                            </div>
+                        </div>
+
+                        <!-- 三证合一 -->
+                        <div class="ThreeInOne" ng-if="AuthenticationForm.DocumentType == 'ThreeInOne' ">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">注册号</span>
+                                </div>
+                                <input type="text" class="form-control" 
+                                name="RegistrationNo" ng-model="AuthenticationForm.RegistrationNo" max="15" placeholder="15位数字" required>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.RegistrationNo.$error.required&&signUpForm.RegistrationNo.$touched">
+                                        必选项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">税务登记证号</span>
+                                </div>
+                                <input type="text" class="form-control" 
+                                name="registrationCertificateNo" ng-model="AuthenticationForm.registrationCertificateNo" max="15" placeholder="15位数字" required>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.registrationCertificateNo.$error.required&&signUpForm.registrationCertificateNo.$touched">
+                                        必选项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">营业执照</span>
+                                </div>
+                                <input type="file" ng-file-select="postBLicense2($files)"
+                                name="CertificatePhoto" class="form-control">
+                            </div>
+                            <br>
+                            <div><p>将原件或盖章的复印件扫描、拍照后上传，文件支持2M以内的PNG、JPG或GIF。</p><p>mac os 系统请使用新版firefox 浏览器上传，也可联系云通讯客服协助上传。</p>
+                            </div>
+                        </div>
+
+                        <!-- 三证分离 -->
+                        <div class="ThreeSeparation" ng-if="AuthenticationForm.DocumentType == 'ThreeSeparation' ">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">税务登记号</span>
+                                </div>
+                                <input type="text" class="form-control" 
+                                name="TaxRegistrationNumber" ng-model="AuthenticationForm.TaxRegistrationNumber" max="15" placeholder="15位数" required>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.TaxRegistrationNumber.$error.required&&signUpForm.TaxRegistrationNumber.$touched">
+                                        必选项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">税务登记证</span>
+                                </div>
+                                <input type="file" ng-file-select="postTaxRegCard($files)"
+                                name="CertificatePhoto" class="form-control">
+                            </div>
+                            <br>
+                               <div style="margin-left: 60px;">
+                                    <p>将原件或盖章的复印件扫描、拍照后上传，文件支持2M以内的PNG、JPG或GIF。</p>
+                                    <p>mac os 系统请使用新版firefox 浏览器上传，也可联系云通讯客服协助上传。</p>
+                               </div>
+                            <hr>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">营业执照号</span>
+                                </div>
+                                <input type="text" class="form-control" 
+                                name="BusinessLicenseNo" ng-model="AuthenticationForm.BusinessLicenseNo" max="15" placeholder="15位数" required>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.BusinessLicenseNo.$error.required&&signUpForm.BusinessLicenseNo.$touched">
+                                        必选项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">营业执照</span>
+                                </div>
+                                <input type="file" ng-file-select="postBLicense3($files)"
+                                name="CertificatePhoto" class="form-control">
+                            </div>
+                            <br>
+                            <div style="margin-left: 70px;">
+                                <p>将<span class="text-danger">需要通过年检</span>的营业执照原件或盖章的复印件扫描、拍照后上传，文件支持2M以内的PNG、JPG或GIF。</p>
+                                <p>mac os 系统请使用新版firefox 浏览器上传，也可联系云通讯客服协助上传。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="margin-left: 120px;">
+                        <button class="btn btn-info" ng-click="AddDeveloperForm()">提交</button>
+                        <span>认证审核时间为1个工作日</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+        </form>
+    </div>
+</div>

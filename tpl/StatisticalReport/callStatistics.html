@@ -1,0 +1,107 @@
+<style>
+.table {
+    table-layout: fixed;
+}
+
+.table,
+th,
+tr {
+    word-break: break-all;
+    word-wrap: break-word;
+}
+</style>
+<div class="container" ng-controller="statistics">
+    <div class="row">
+        <h3>话单统计：</h3>
+        <span class="col-lg-2">
+            <label>业务类型：</label>
+              <select class="form-control" ng-model="SearchForm.callType" placeholder="搜索……">
+               <option value="" >——请选择——</option>
+               <option value="2">语音</option>
+               <option value="3">短信</option>
+            </select>
+       </span>
+        <span class="col-lg-2">
+            <label>主叫号码：</label>
+           <input type="text" ng-model="SearchForm.callingNo" class="form-control" placeholder="搜索……">
+        </span>
+        <span class="col-lg-2">
+            <label>被叫号码：</label>
+           <input type="text" ng-model="SearchForm.calledNo" class="form-control" placeholder="搜索……">
+        </span>
+        <span class="col-lg-2">
+            <label>开始日期：</label>
+           <input type="text" id="callStartTime"  ng-model="SearchForm.callStartTime" class="form-control"  name="callStartTime"
+            onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked: function(){$(this).trigger('change')},maxDate:'#F{$dp.$D(\'callEndTime\')}'}) " placeholder="搜索……">
+        </span>
+        <span class="col-lg-2">
+            <label>结束日期：</label>
+           <input type="text"  id="callEndTime" ng-model="SearchForm.callEndTime" class="form-control" name="callEndTime"
+            onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked: function(){$(this).trigger('change')},minDate:'#F{$dp.$D(\'callStartTime\')}'})" placeholder="搜索……">
+        </span>
+        <br/>
+        <span class="col-lg-1">
+          <button class="btn btn-default" type="button" ng-click="cdrSearch()"> <a href="" class="glyphicon glyphicon-search">搜索</a>
+          </button>
+        </span>
+    </div>
+    <br />
+    <table class="table table-responsive">
+        <tr>
+            <th>通话ID</th>
+            <th>版本号</th>
+            <th>appkey</th>
+            <th>真实号码</th>
+            <th>隐私号码</th>
+            <th>对端号码</th>
+            <th>呼叫类型</th>
+            <th>通话开始时间</th>
+            <th>通话结束时间</th>
+            <th>释放方向</th>
+            <th>释放原因</th>
+            <th>振铃开始时间</th>
+            <th>通话录音</th>
+        </tr>
+        <tr ng-repeat="list in statisticsTD">
+            <td>{{list.call_id}}</td>
+            <td>{{list.v}}</td>
+            <td>{{list.app_key}}</td>
+            <td>{{list.phone_no}}</td>
+            <td>{{list.secret_no}}</td>
+            <td>{{list.peer_no}}</td>
+            <td>{{list.call_type}}</td>
+            <td>{{list.call_time}}</td>
+            <td>{{list.release_time}}</td>
+            <td>{{list.release_dir}}</td>
+            <td>{{list.release_cause}}</td>
+            <td>{{list.ringing_time}}</td>
+            <td>
+                <div class="dropdown">
+                    <button type="button" name="" data-toggle="dropdown" class="btn btn-success" id="dropdownMenu1" ng-click="audioID(list.call_id,$index)">播放</button>
+                    <audio ng-hide="Boolean != list.call_id" controls="controls" class="pull-right" role="menu" aria-labelledby="dropdownMenu1">
+                        <source src=""></source>
+                        <!--                            您的浏览器不支持 audio 元素。 -->
+                        <!--                            <source id="mp3Id" src="mp3/14c8117600003883.mp3"></source>    -->
+                    </audio>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <nav>
+        <ul class="pagination paging pull-right">
+            <li>
+                <a ng-click="Previous()">
+                    <span>上一页</span>
+                </a>
+            </li>
+            <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                <a ng-click="selectPage(page)">{{ page }}</a>
+            </li>
+            <li>
+                <a ng-click="Next()">
+                    <span>下一页</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

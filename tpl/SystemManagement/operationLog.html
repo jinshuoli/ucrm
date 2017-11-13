@@ -1,0 +1,59 @@
+<div class="container row" ng-controller="operationlog">
+    <h3>操作日志</h3>
+    <hr/>
+    <div class="row">
+        <span class=" col-lg-offset-5 col-lg-2">
+            <label>操作员：</label>
+            <input type="text" class="form-control" ng-model="searchList.username"  placeholder="搜索……">
+        </span>
+        <span class="col-lg-2">
+            <label>开始日期：</label>
+            <input type="text" id="startDate" ng-model="searchList.startDate"  onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked: function(){$(this).trigger('change')},maxDate:'#F{$dp.$D(\'endDate\')}'})" class="form-control" placeholder="搜索……">
+        </span>
+        <span class="col-lg-2">
+            <label>结束日期：</label>
+            <input type="text" id="endDate" ng-model="searchList.endDate" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked: function(){$(this).trigger('change')},minDate:'#F{$dp.$D(\'startDate\')}'})" class="form-control" placeholder="搜索……">
+        </span>
+        <br/>
+        <span class="col-lg-1">
+          <button class="btn btn-default" type="button"><a href="" class="glyphicon glyphicon-search" ng-click="search()">搜索</a></button>
+        </span>
+    </div>
+    <br/>
+    <table class="table table-bordered">
+        <tr class="bg-primary">
+            <th>序号</th>
+            <th>功能名称</th>
+            <th>操作描述</th>
+            <th>操作日期</th>
+            <th>备注</th>
+            <th>操作人员</th>
+        </tr>
+        <tr ng-repeat="data in TdItem">
+            <td>{{$index+1}}</td>
+            <td>{{data.functionName}}</td>
+            <td>{{data.statement}}</td>
+            <td>{{data.createTime.time|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>{{data.comments}}</td>
+            <td>{{data.name}}</td>
+        </tr>
+    </table>
+    <!--下面是分页-->
+    <nav>
+        <ul class="pagination paging pull-right">
+            <li>
+                <a ng-click="Previous()">
+                    <span>上一页</span>
+                </a>
+            </li>
+            <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                <a ng-click="selectPage(page)">{{ page }}</a>
+            </li>
+            <li>
+                <a ng-click="Next()">
+                    <span>下一页</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

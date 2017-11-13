@@ -1,0 +1,237 @@
+<div class="container row" ng-controller="Administration as ctrl">
+    <h3>功能权限管理</h3>
+    <hr/>
+    <ul class="nav nav-tabs" role="tablist" id="myTab">
+        <li role="presentation" class="active"><a href="#Admin" data-toggle="tab" target="_self">功能管理</a></li>
+        <li role="presentation" ng-click="functionAuth()"><a href="#Jurisdiction" data-toggle="tab" target="_self">权限管理</a></li>
+    </ul>
+    <br/>
+    <div class="tab-content">
+        <!--功能管理-->
+        <div class="tab-pane active" id="Admin">
+            <div class="row">
+                <button type="button" class="btn btn-success col-lg-1 butt-add" data-toggle="modal" data-target="#myModalAdd">
+                    <span class="glyphicon glyphicon-plus-sign glyphicon-lg"></span> 添加
+                </button>
+                <form>
+                    <span class="col-lg-offset-5 col-lg-2">
+                <label>名称：</label>
+                <input type="text" class="form-control" ng-model="searchList.name" placeholder="搜索……" />
+            </span>
+                    <span class="col-lg-2">
+                <label>编号：</label>
+                <input type="text" class="form-control" ng-model="searchList.number" placeholder="搜索……" />
+            </span>
+                    <br/>
+                    <span class="col-lg-1">
+              <button class="btn btn-default" type="button" ng-click="search()"><a href="" class="glyphicon glyphicon-search">搜索</a></button>
+            </span>
+                </form>
+            </div>
+            <br/>
+            <table class="table table-bordered">
+                <tr class="bg-info">
+                    <th>功能ID</th>
+                    <th>名称</th>
+                    <th>目标</th>
+                    <th>功能代码</th>
+                    <th>状态</th>
+                    <th>状态日期</th>
+                    <th>操作栏</th>
+                </tr>
+                <tr ng-repeat="list in TdItem">
+                    <td>{{list.functionId}}</td>
+                    <td>{{list.functionName}}</td>
+                    <td>{{list.target}}</td>
+                    <td>{{list.functionCode}}</td>
+                    <td ng-switch on="list.status">
+                        <span ng-switch-when="V">有效</span>
+                        <span ng-switch-when="I">无效</span>
+                        <span ng-switch-when="T">注销</span>
+                    </td>
+                    <td>{{list.statusDate.time|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td>
+                        <input type="button" class="btn btn-danger" ng-click="deleteTd({{list.functionId}})" value="删除">
+                        <!--删除当前行-->
+                        <input type="button" class="btn btn-warning" value="修改" ng-click="updateTd($index,list.levelId)" data-toggle="modal" data-target="#myModarevisestysem">
+                    </td>
+                </tr>
+            </table>
+            <!--下面是弹出框的页面-->
+            <div class="modal fade" id="myModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAdd" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form class="modal-content" role="form" name="signUpForm">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel11">添加功能</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">名称</span>
+                                </div>
+                                <input type="text" name="functionName" class="form-control" ng-model="AdministrationForm.functionName" required>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.functionName.$error.required&&signUpForm.functionName.$touched">
+                                        必填项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <sapn class="btn btn-default">目标</sapn>
+                                </div>
+                                <input type="text" class="form-control" name="target" ng-model="AdministrationForm.target" required>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.target.$error.required&&signUpForm.target.$touched">
+                                        必填项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">功能代码</span>
+                                </div>
+                                <input type="text" name="functionCode" class="form-control" ng-model="AdministrationForm.functionCode" required>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.functionCode.$error.required&&signUpForm.functionCode.$touched">
+                                        必填项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">父级功能</span>
+                                </div>
+                                <select class="form-control" name="parentId" ng-model="AdministrationForm.parentId" required>
+                                    <option ng-repeat="(key,value) in parentId" value="{{key}}">{{value}}</option>
+                                </select>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.parentId.$error.required&&signUpForm.parentId.$touched">
+                                        必填项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">等级</span>
+                                </div>
+                                <select name="levelId" class="form-control" ng-model="AdministrationForm.levelId" required>
+                                    <option value="">——请选择——</option>
+                                    <option value="1">First Level</option>
+                                    <option value="2">Second Level</option>
+                                </select>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.levelId.$error.required&&signUpForm.levelId.$touched">
+                                        必填项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-info" ng-click="AdministrationTdadd()" data-dismiss="modal">确认</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--下面是修改弹出框的页面-->
+            <div class="modal fade" id="myModarevisestysem" tabindex="-1" role="dialog" aria-labelledby="myModalLabelrevise" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel1revise">修改功能</h4>
+                        </div>
+                        <form class="modal-body" name="Myform">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default">名称</button>
+                                </div>
+                                <input type="text" name="functionName" class="form-control" ng-model="AdministrationForm.functionName" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default">目标</button>
+                                </div>
+                                <input type="text" class="form-control" ng-model="AdministrationForm.target" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default">功能代码</button>
+                                </div>
+                                <input type="text" class="form-control" ng-model="AdministrationForm.functionCode" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default">父级功能</button>
+                                </div>
+                                <select class="form-control" id="parent">
+                                    <option ng-repeat="(key,value) in parentId" value="{{key}}">{{value}}</option>
+                                </select>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default">等级</button>
+                                </div>
+                                <select class="form-control" id="level" required>
+                                    <option ng-repeat="(key,value) in levelId[0]" value="{{key}}">{{value}}</option>
+                                </select>
+                            </div>
+                            <br/>
+                        </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-info" ng-disabled="Myform.$pristine;" ng-click="sysFunctionUpdate()" data-dismiss="modal">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--下面是分页-->
+            <nav>
+                <ul class="pagination paging pull-right">
+                    <li>
+                        <a ng-click="Previous()">
+                            <span>上一页</span>
+                        </a>
+                    </li>
+                    <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                        <a ng-click="selectPage(page)">{{ page }}</a>
+                    </li>
+                    <li>
+                        <a ng-click="Next()">
+                            <span>下一页</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <!--权限管理-->
+        <div class="tab-pane" id="Jurisdiction">
+            <div class="container">
+                <br/>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <select id="sel" change="action()" class="form-control">
+                            <option value="">——请选择——</option>
+                            <option ng-repeat="(key,value) in roleId" value="{{key}}">{{ value }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <h3 class="col-lg-offset-2 col-lg-3" style="display: inline"><span class="glyphicon glyphicon-edit">未分配功能权限</span></h3>
+                    <h3 class="col-lg-offset-1 col-lg-3" style="display: inline">&nbsp;&nbsp;<span class="glyphicon glyphicon-share">已分配功能权限</span></h3>
+                </div>
+                <div select-l-r="ctrl.noUseFunc" select-l-r-values="ctrl.usedFunc" select-l-r-change="ctrl.funcChange(values)"></div>
+                <br/>
+                <input type="button" class="btn btn-lg btn-success row col-lg-offset-10" ng-click="Preservation()" value="保存" />
+            </div>
+        </div>
+    </div>
+</div>

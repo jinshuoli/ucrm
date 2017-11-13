@@ -1,0 +1,466 @@
+<div class="container" ng-controller="SmsTemplate">
+    <br>
+    <ul class="nav nav-tabs" role="tablist" id="myTab">
+        <li role="presentation" class="active"><a href="#SmsTmp" data-toggle="tab" target="_self">短信模板</a></li>
+        <li role="presentation"><a href="#autograph" data-toggle="tab" target="_self">模板签名</a></li>
+    </ul>
+    <br>
+    <div class="tab-content">
+        <!-- 短信模板 -->
+        <div class="tab-pane active" id="SmsTmp">
+            <div class="row">
+                <button type="button" class="btn btn-success col-lg-1" data-toggle="modal" data-target="#myModalUssd">
+                    ussd模板
+                </button>
+                <button type="button" class="btn btn-primary col-lg-1 butt-add" data-toggle="modal" data-target="#myModaSms">
+                    sms模板
+                </button>
+                <span class="col-lg-offset-4 col-lg-2">
+                    <label>类型：</label>
+                    <select class="form-control" id="typeSel" ng-model="SearchForms.type">
+                        <option value="">——请选择——</option>
+                        <option value="u"> USSD </option>
+                        <option value="s"> SMS </option>
+                    </select>
+                </span>
+                <span class="col-lg-2">
+                    <label>上游模板编号：</label>
+                    <input type="text" class="form-control" ng-model="SearchForms.realTid" placeholder="搜索……">
+                </span>
+                <br/>
+                <span class="col-lg-1">
+                  <button class="btn btn-default" type="button" ng-click="SearchForm()"><a href="" class="glyphicon glyphicon-search">搜索</a></button>
+                </span>
+            </div>
+            <br/>
+            <table class="table table-striped">
+                <tr>
+                    <th>上游模板编号</th>
+                    <th>cutId</th>
+                    <th>用户名</th>
+                    <th>模板内容</th>
+                    <th>参数描述</th>
+                    <th>状态</th>
+                    <th>审核失败原因</th>
+                    <th>类型</th>
+                    <th>操作</th>
+                </tr>
+                <tr ng-repeat="data in templateTD">
+                    <td>{{data.tRealTid}}</td>
+                    <td>{{data.tCutId}}</td>
+                    <td>{{data.suName}}</td>
+                    <td>{{data.tContent}}</td>
+                    <td>{{data.tParadesc}}</td>
+                    <td ng-switch on="data.tStatus">
+                        <span ng-switch-when="w">等待审核</span>
+                        <span ng-switch-when="c">审核成功</span>
+                        <span ng-switch-when="f">审核失败</span>
+                    </td>
+                    <td>{{data.tAuditfailedreason}}</td>
+                    <td ng-switch on="data.tType">
+                        <span ng-switch-when="s">sms</span>
+                        <span ng-switch-when="u">ussd</span>
+                    </td>
+                    <td>
+                        <input type="button" class="btn btn-danger" value="删除" ng-click="Delete(data.tTemplateId);">
+                        <input type="button" class="btn btn-warning" value="修改" ng-click="Revise($index)" data-toggle="modal" data-target="#modalRevise">
+                    </td>
+                </tr>
+            </table>
+            <!--下面是ussd模板-->
+            <div class="modal fade" id="myModalUssd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <!--定位、宽高-->
+                    <form class="modal-content" role="form" name="signFormUssd">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="ussd">ussd模板</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">上游模板编号</span>
+                                </div>
+                                <input type="text" class="form-control" name="tRealTid" ng-model="templateUssdForm.tRealTid" required>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signFormUssd.tRealTid.$error.required&&signFormUssd.tRealTid.$touched">
+                                        必填项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">cutId</span>
+                                </div>
+                                <input type="text" class="form-control" name="tCutId" ng-model="templateUssdForm.tCutId" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">模板内容</span>
+                                </div>
+                                <textarea class="form-control" name="tContent" ng-model="templateUssdForm.tContent" ng-maxlength="60" placeholder="请name于date到adress集合；" required></textarea>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signFormUssd.tContent.$error.required&&signFormUssd.tContent.$touched">
+                                        必填项！</p>
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signFormUssd.tContent.$error.maxlength&&signFormUssd.tContent.$touched">内容长度不多于60位</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">参数描述</span>
+                                </div>
+                                <input type="text" class="form-control" name="tParadesc" ng-model="templateUssdForm.tParadesc" required>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signFormUssd.tParadesc.$error.required&&signFormUssd.tParadesc.$touched">
+                                        必填项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">状态</span>
+                                </div>
+                                <select class="form-control" name="tStatus" ng-model="templateUssdForm.tStatus" required>
+                                    <option name="select" ng-repeat="(key,value) in tStatus" value="{{key}}">{{value}}</option>
+                                </select>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signFormUssd.tStatus.$error.required&&signFormUssd.tStatus.$touched">
+                                        必选项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">审核失败原因</span>
+                                </div>
+                                <input type="text" class="form-control" name="tAuditfailedreason" ng-model="templateUssdForm.tAuditfailedreason" required>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signFormUssd.tAuditfailedreason.$error.required&&signFormUssd.tAuditfailedreason.$touched">
+                                        必填项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">类型</span>
+                                </div>
+                                <input type="text" class="form-control" value="ussd" name="tType" ng-disabled="true" required>
+                            </div>
+                            <br/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                            <button type="reset" class="btn btn-info" ng-click="UssdSubmit()">提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--下面是sms模板-->
+            <div class="modal fade" id="myModaSms" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <!--定位、宽高-->
+                    <form class="modal-content" role="form" name="signFormSms">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="sms">sms模板</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">上游模板编号</span>
+                                </div>
+                                <input type="text" class="form-control" name="tRealTid" ng-model="templateSmsForm.tRealTid" required>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signFormSms.tRealTid.$error.required&&signFormSms.tRealTid.$touched">
+                                        必填项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">cutId</span>
+                                </div>
+                                <input type="text" class="form-control" name="tCutId" ng-model="templateSmsForm.tCutId" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">模板内容</span>
+                                </div>
+                                <textarea class="form-control" name="tContent" ng-model="templateSmsForm.tContent" ng-maxlength="60" placeholder="请name于date到adress集合；" required></textarea>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signFormSms.tContent.$error.required&&signFormSms.tContent.$touched">
+                                        必填项！</p>
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signFormSms.tContent.$error.maxlength&&signFormSms.tContent.$touched">内容长度不多于60位</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">参数描述</span>
+                                </div>
+                                <input type="text" class="form-control" name="tParadesc" ng-model="templateSmsForm.tParadesc" required>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signFormSms.tParadesc.$error.required&&signFormSms.tParadesc.$touched">
+                                        必填项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">状态</span>
+                                </div>
+                                <select class="form-control" name="tStatus" ng-model="templateSmsForm.tStatus" required>
+                                    <option name="select" ng-repeat="(key,value) in tStatus" value="{{key}}">{{value}}</option>
+                                </select>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signFormSms.tStatus.$error.required&&signFormSms.tStatus.$touched">
+                                        必选项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">审核失败原因</span>
+                                </div>
+                                <input type="text" class="form-control" name="tAuditfailedreason" ng-model="templateSmsForm.tAuditfailedreason" required>
+                                <div class="top-right">
+                                    <p class="text-danger glyphicon glyphicon-remove" ng-if="signFormSms.tAuditfailedreason.$error.required&&signFormSms.tAuditfailedreason.$touched">
+                                        必填项！</p>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">类型</span>
+                                </div>
+                                <input type="text" class="form-control" value="sms" ng-disabled="true" required>
+                            </div>
+                            <br/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                            <button type="reset" class="btn btn-info" ng-click="SmsSubmit()">提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--下面是修改-->
+            <div class="modal fade" id="modalRevise" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form class="modal-content" role="form" name="signFormSms">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="modalRevis">修改模板</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">上游模板编号</span>
+                                </div>
+                                <input type="text" class="form-control" name="realTid" ng-model="templateReviseForm.realTid" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">cutId</span>
+                                </div>
+                                <input type="text" class="form-control" ng-model="templateReviseForm.cutId" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">用户名</span>
+                                </div>
+                                <input type="text" class="form-control" ng-model="templateReviseForm.createUser" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">模板内容</span>
+                                </div>
+                                <textarea class="form-control" name="content" ng-model="templateReviseForm.content" ng-maxlength="60" placeholder="请name于date到adress集合；" required></textarea>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">参数描述</span>
+                                </div>
+                                <input type="text" class="form-control" name="paradesc" ng-model="templateReviseForm.paradesc" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default">状态</button>
+                                </div>
+                                <select class="form-control" ng-model="templateReviseForm.status">
+                                    <option value="w">等待审核</option>
+                                    <option value="c">审核成功</option>
+                                    <option value="f">审核失败</option>
+                                </select>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">审核失败原因</span>
+                                </div>
+                                <input type="text" class="form-control" name="auditfailedreason" ng-model="templateReviseForm.auditfailedreason" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <span class="btn btn-default">类型</span>
+                                </div>
+                                <select class="form-control" ng-model="templateReviseForm.type" name="type">
+                                    <option value="s">sms</option>
+                                    <option value="u">ussd</option>
+                                </select>
+                            </div>
+                            <br/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-info" ng-click="ReviseTemplate()" data-dismiss="modal">修改</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <nav>
+                <ul class="pagination paging pull-right">
+                    <li>
+                        <a ng-click="Previous()">
+                            <span>上一页</span>
+                        </a>
+                    </li>
+                    <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                        <a ng-click="selectPage(page)">{{ page }}</a>
+                    </li>
+                    <li>
+                        <a ng-click="Next()">
+                            <span>下一页</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <!-- 模板签名 -->
+        <div class="tab-pane" id="autograph">
+            <div class="row">
+                <button type="button" class="btn btn-primary  col-lg-offset-1 col-lg-1" data-toggle="modal" data-target="#AutographModal">
+                    添加签名
+                </button>
+            <span class="input-group col-lg-offset-6 col-lg-3">
+                <input type="text" class="form-control" ng-model="Search.Autograph" placeholder="搜索签名">
+                <div class="input-group-btn">
+                    <span class="btn btn-default">
+                    <a href="" class="glyphicon glyphicon-search" ng-click="SearchAutograph()">搜索</a>
+                    </span>
+                </div>
+            </span>
+        </div>
+        <br>
+        <div style="overflow:scroll; height:450px; width: 1100px;">
+            <table class="table table-responsive">
+                <tr class="bg-info">
+                    <th>工单号</th>
+                    <th>签名名称</th>
+                    <th>签名时间</th>
+                    <th>类型 </th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                <tr ng-repeat="list in TdItem">
+                    <td ng-bind="list.id"></td>
+                    <td ng-bind="list.autographName"></td>
+                    <td ng-bind="list.autographTime"></td>
+                    <td ng-bind="list.type"></td>
+                    <td ng-bind="list.state"></td>
+                    <td>
+                        <input type="button" class="btn btn-danger" value="删除" ng-click="DelAutograph(list.id)">
+                        <input type="button" class="btn btn-warning" ng-click="modifyAutograph($index)" data-toggle="modal" data-target="#modifyModal" value="修改">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--下面是短信签名添加-->
+        <div class="modal fade" id="AutographModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <form class="modal-content" role="form" name="AddAutogreaphForm">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="ussd">添加短信签名</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <span class="btn btn-default">签名：</span>
+                            </div>
+                            <input type="text" class="form-control" name="AutogreaphID" ng-model="AutogreaphForm.AutogreaphID" required>
+                            <div class="top-right">
+                                <p class="text-danger glyphicon glyphicon-remove" ng-if="AddAutogreaphForm.AutogreaphID.$error.required&&AddAutogreaphForm.AutogreaphID.$touched">
+                                    请输入签名！</p>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <span class="btn btn-default">备注：</span>
+                            </div>
+                            <textarea type="text" class="form-control" name="Remarks" ng-model="AutogreaphForm.Remarks" required>
+                            </textarea>
+                            <div class="top-right">
+                                <p class="text-danger glyphicon glyphicon-remove" ng-if="AddAutogreaphForm.Remarks.$error.required&&AddAutogreaphForm.Remarks.$touched">
+                                    请输入备注！</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                        <button type="reset" class="btn btn-info" ng-click="AddSubmit()">确认</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--下面是短信签名修改-->
+        <div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <form class="modal-content" role="form" name="modifyAutogreaphForm">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="ussd">修改短信签名</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <span class="btn btn-default">签名：</span>
+                            </div>
+                            <input type="text" class="form-control" name="modifyAutogreaphID" ng-model="AutogreaphForm1.modifyAutogreaphID" required>
+                            <div class="top-right">
+                                <p class="text-danger glyphicon glyphicon-remove" ng-if="modifyAutogreaphForm1.modifyAutogreaphID.$error.required&&modifyAutogreaphForm1.modifyAutogreaphID.$touched">
+                                    请输入签名！</p>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <span class="btn btn-default">备注：</span>
+                            </div>
+                            <textarea type="text" class="form-control" name="modifyRemarks" ng-model="AutogreaphForm1.modifyRemarks" required>
+                            </textarea>
+                            <div class="top-right">
+                                <p class="text-danger glyphicon glyphicon-remove" ng-if="modifyAutogreaphForm1.modifyRemarks.$error.required&&modifyAutogreaphForm1.modifyRemarks.$touched">
+                                    请输入备注！</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                        <button type="reset" class="btn btn-info" ng-click="modifySubmit()">确认</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

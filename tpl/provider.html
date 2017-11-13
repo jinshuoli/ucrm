@@ -1,0 +1,100 @@
+<br />
+<div class="container" ng-controller="provider">
+    <h3>供应商</h3>
+    <hr/>
+    <div class="row">
+        <button type="button" class="btn btn-success col-lg-1 butt-add" data-toggle="modal" data-target="#myModal">
+            <span class="glyphicon glyphicon-plus-sign glyphicon-lg"></span> 添加
+        </button>
+        <span class="col-lg-offset-5 col-lg-2">
+            <label>名称：</label>
+            <input type="text" class="form-control" placeholder="搜索……">
+        </span>
+        <span class="col-lg-2">
+            <label>日期：</label>
+            <input type="text" class="form-control" placeholder="搜索……">
+        </span>
+        <br/>
+        <span class="col-lg-1">
+          <button class="btn btn-default" type="button"><a href="" class="glyphicon glyphicon-search">搜索</a></button>
+        </span>
+    </div>
+    <br/>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>名称</th>
+            <th>地址</th>
+            <th>手机</th>
+            <th>创建时间</th>
+            <th>状态</th>
+            <th>状态日期</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="data in providerTD">
+            <td>{{$index+1}}</td>
+            <td>{{data.name}}</td>
+            <td>{{data.address}}</td>
+            <td>{{data.phone}}</td>
+            <td>{{data.createTime}}</td>
+            <td>{{data.status}}</td>
+            <td>{{data.statusDate}}</td>
+            <td>
+                <input type="button" class="btn btn-danger" value="删除" onclick="Delete(this.parentNode.parentNode);">
+                <!--删除当前行-->
+                <input type="button" class="btn btn-warning" value="修改" onclick="xiu(this)">
+            </td>
+        </tr>
+    </table>
+    <!--下面是弹出框的页面-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <form class="modal-content" role="form" name="signForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabe1">添加供应商</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">名称</span>
+                        </div>
+                        <input type="text" class="form-control" name="name" ng-model="providerForm.name" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signForm.name.$error.required&&signForm.name.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">地址</span>
+                        </div>
+                        <input type="text" class="form-control" name="address" ng-model="providerForm.address" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signForm.address.$error.required&&signForm.address.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">手机</span>
+                        </div>
+                        <input type="text" class="form-control" name="phone" ng-model="providerForm.phone" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signForm.phone.$error.required&&signForm.phone.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-info">确认</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

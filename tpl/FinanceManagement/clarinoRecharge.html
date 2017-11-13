@@ -1,0 +1,147 @@
+<div class="container row" ng-controller="clarinoRecharge">
+<br />
+    <div class="row">
+        <div class="pull-right col-lg-4">
+        <div class="input-group">
+            <input type="number" name=""  class="form-control"
+            onkeyup="this.value=this.value.replace(/\D/g,'')"
+            onafterpaste="this.value=this.value.replace(/\D/g,'')"
+            maxlength="10" ng-model="SetVel" placeholder="设置告警值：">
+         <span class="btn input-group-addon" ng-click="RechargeSet(SetVel)">确定</span>
+        </div>
+        <br>
+         <h4>充值订单查询:</h4>
+        <textarea id="SeachOrder" id="" cols="30" rows="20"
+            class="form-control" placeholder="多个订单号之间用逗号隔开！"
+            onkeyup="this.value=this.value.replace(/\s/g,'')"
+            onafterpaste="this.value=this.value.replace(/\s/g,'')"></textarea>
+            <br>
+         <button class="btn btn-warning pull-right" ng-click="SeachOrder()">查询</button>
+        </div>
+        <form role="form" name="signUpForm" class="col-lg-8">
+            <div class="modal-header">
+                <h3 class="modal-title">小号充值</h3>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <span class="btn btn-default"> 手 机 号</span>
+                    </div>
+
+                    <textarea name="P2_mobile" id="" cols="80" rows="10"
+                        class="form-control" ng-model="clarinoRechargeForm.P2_mobile"
+                        onkeyup="this.value=this.value.replace(/\s/g,'')"
+                        onafterpaste="this.value=this.value.replace(/\s/g,'')"
+                        placeholder="多个手机号之间用逗号隔开！"
+                        required></textarea>
+                    <div class="top-right">
+                        <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.P2_mobile.$error.required&&signUpForm.P2_mobile.$touched">
+                            必填项！</p>
+                    </div>
+                </div>
+                <br/>
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <sapn class="btn btn-default">充值金额</sapn>
+                    </div>
+                    <select name="P3_parvalue" class="form-control" ng-model="clarinoRechargeForm.P3_parvalue" required>
+                        <option value="">——选择金额——</option>
+                        <option value="a">10 </option>
+                        <option value="b">20 </option>
+                        <option value="c">30 </option>
+                        <option value="d">50 </option>
+                        <option value="e">100</option>
+                        <option value="f">200</option>
+                        <option value="g">300</option>
+                        <option value="h">500</option>
+                    </select>
+                    <div class="top-right">
+                        <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.P3_parvalue.$error.required&&signUpForm.P3_parvalue.$touched">
+                            必填项！</p>
+                    </div>
+                </div>
+                <br/>
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <span class="btn btn-default">充值产品</span>
+                    </div>
+                    <select name="P4_productcode" class="form-control" ng-model="clarinoRechargeForm.P4_productcode" required>
+                        <option value="">——选择运营商——</option>
+                        <option value="SHKC"     >移动</option>
+                        <option value="SHKC_CU"  >联通</option>
+                        <option value="SHKC_CT"  >电信</option>
+                        <option value="SHKCFA"   >移动全国流量</option>
+                        <option value="SHKCFA_CU">联通全国流量</option>
+                        <option value="SHKCFA_CT">电信全国流量 </option>
+                        <option value="SHKCFS"   >移动分省漫游流量</option>
+                        <option value="SHKCFS_CU">联通分省漫游流量</option>
+                        <option value="SHKCFS_CT">电信分省漫游流量 </option>
+                        <option value="SHKCFL"   >移动地方流量 </option>
+                        <option value="SHKCFL_CU">联通地方流量</option>
+                        <option value="SHKCFL_CT">电信地方流量</option>
+                        <option value="ZSH"      >中石化</option>
+                        <option value="ZSY"      >中石油</option>
+                        <option value="XUNI"     >虚拟运营商</option>
+                        <option value="YDGH"     >移动固话 </option>
+                        <option value="LTGH"     >联通固话</option>
+                        <option value="DXGH"     >电信固话</option>
+                    </select>
+                    <div class="top-right">
+                        <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.P4_productcode.$error.required&&signUpForm.P4_productcode.$touched">
+                            必填项！</p>
+                    </div>
+                </div>
+                <br/>
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <sapn class="btn btn-default">商户回调地址</sapn>
+                    </div>
+                    <input type="text" class="form-control" name="P6_callbackurl" ng-model="clarinoRechargeForm.P6_callbackurl" required>
+                    <div class="top-right">
+                        <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.P6_callbackurl.$error.required&&signUpForm.P6_callbackurl.$touched">
+                            必填项！</p>
+                    </div>
+                </div>
+                <br/>
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <sapn class="btn btn-default">商户扩展信息</sapn>
+                    </div>
+                    <input type="text" class="form-control" name="P7_extendinfo" ng-model="clarinoRechargeForm.P7_extendinfo" required>
+                    <div class="top-right">
+                        <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.P7_extendinfo.$error.required&&signUpForm.P7_extendinfo.$touched">
+                            必填项！</p>
+                    </div>
+                </div>
+                <br/>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" ng-click="RechargeAdd()">充值</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div>
+        <table class="table table-responsive">
+            <tr class="bg-info">
+                <th>手机号</th>
+                <th>订单号</th>
+                <th>余额</th>
+                <th>充值产品</th>
+                <th>商户回调地址</th>
+                <th>商户扩展信息</th>
+                <th>充值状态</th>
+            </tr>
+            <tr ng-repeat="list in clarinoRechargeTD">
+                <td ng-bind="list.phoneNumber"></td>
+                <td ng-bind="list.OrderNumber"></td>
+                <td ng-bind="list.balance"></td>
+                <td ng-bind="list.RechargeType"></td>
+                <td ng-bind="list.P4_productcode"></td>
+                <td ng-bind="list.P6_callbackurl"></td>
+                <td ng-class={"text-info":list.state=="200"}>
+                {{list.state =="200"? "成功":list.state}}</td>
+            </tr>
+        </table>
+    </div>
+
+</div>

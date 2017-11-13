@@ -1,0 +1,183 @@
+<div class="container" ng-controller="clarinoCallStatistics">
+    <h4 class="center-block">
+               小号通话统计：
+        </h4>
+    <br>
+    <ul class="nav nav-tabs" role="tablist" id="myTab">
+        <li role="presentation" class="active"><a href="#ToMonth" data-toggle="tab" target="_self">月报表</a></li>
+        <li role="presentation"><a href="#ToDay" data-toggle="tab" target="_self">日报表</a></li>
+    </ul>
+    <div class="tab-content">
+        <!-- ===================== 按月查询 ========================== -->
+        <div class="tab-pane active" id="ToMonth">
+            <br>
+            <div class="row">
+                <span class="col-lg-2">
+                  <label>导出方式：</label>
+                   <select class="form-control" id="selectedToMonth">
+                       <option value="xls">导出Excel</option>
+                       <option value="csv">导出CSV</option>
+                       <option value="txt">导出TXT</option>
+                       <option value="json">导出JSON</option>
+                   </select>
+                </span>
+                <span class="col-lg-3">
+                   <button class="btn btn-success" style="margin-top: 20px;" id="exportToMonth">导出</button>
+                </span>
+                <div class="bubble-box arrow-right mt">
+                    <div class="wrap">客户名称和查询方式不能为空！</div>
+                </div>
+                <span class="col-lg-2">
+                        <label>客户名称：</label>
+                        <select id="CNToMonth" class="form-control">
+                            <option value="">—请选择—</option>
+                            <option ng-repeat="(key,value) in CNMonthForm" value="{{ value }}">{{ value }}
+                            </option>
+                        </select>
+                </span>
+                <span class="col-lg-2">
+                        <label class="seachFunc">按月份查询：</label>
+                       <input type="text" id="seachFunc" ng-model="SearchToMonth" class="form-control"  onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM',onpicked: function(){$(this).trigger('change')}} )"
+                        placeholder="查询" />
+                </span>
+                <br/>
+                <span class="col-lg-1">
+                      <button class="btn btn-default" type="button" ng-click="ToMonthSerach()">
+                          <a href="" class="glyphicon glyphicon-search">搜索</a>
+                      </button>
+                </span>
+            </div>
+            <br>
+            <div style="overflow:scroll; height:450px; width: 1100px;">
+                <table class="table table-responsive" id="tableToMonth">
+                    <tr class="bg-primary">
+                        <th>瓜子呼叫中心</th>
+                        <th>小号</th>
+                        <th>district</th>
+                        <th>话单记录数</th>
+                        <th>拒接数</th>
+                        <th>接通数</th>
+                        <th>回拨数</th>
+                        <th>客服主动拨打</th>
+                        <th>总通话秒数</th>
+                        <th>接通平均通话秒数</th>
+                        <th>总平均通话秒数</th>
+                        <th>接通率</th>
+                        <th>总通话分钟数</th>
+                    </tr>
+                    <tr ng-repeat="list in ToMonthToTD">
+                        <td ng-bind="list.duration"></td>
+                        <td ng-bind="list.acms"></td>
+                        <td ng-bind="list.district"></td>
+                        <td ng-bind="list.dial"></td>
+                        <td ng-bind="list.reject"></td>
+                        <td ng-bind="list.dial"></td>
+                        <td ng-bind="list.callback"></td>
+                        <td ng-bind="list.averageconn"></td>
+                        <td ng-bind="list.cdrno"></td>
+                        <td ng-bind="list.rateofconn"></td>
+                        <td ng-bind="list.rateofcallbackconn"></td>
+                        <td ng-bind="list.totalaverageconn"></td>
+                        <td ng-bind="list.minutes"></td>
+                    </tr>
+                    <!-- <tr><td>正在加载中……</td></tr> -->
+                </table>
+            </div>
+        </div>
+        <!-- =====================按天查询========================== -->
+        <div class="tab-pane" id="ToDay">
+            <div class="row">
+                <br>
+                <span class="col-lg-2">
+                  <label>导出方式：</label>
+                   <select class="form-control" id="selectedToDay">
+                       <option value="xls">导出Excel</option>
+                       <option value="csv">导出CSV</option>
+                       <option value="txt">导出TXT</option>
+                       <option value="json">导出JSON</option>
+                   </select>
+                </span>
+                <span class="col-lg-3">
+                   <button class="btn btn-success" style="margin-top: 20px;" id="exportToDay">导出</button>
+                </span>
+                <div class="bubble-box arrow-right mt">
+                    <div class="wrap">客户名称和查询方式不能为空！</div>
+                </div>
+                <span class="col-lg-2">
+                        <label>客户名称：</label>
+                        <select id="CNToDay" class="form-control">
+                            <option value="">—请选择—</option>
+                            <option ng-repeat="(key,value) in CNDayForm" value="{{ value }}">{{ value }}
+                            </option>
+                        </select>
+                </span>
+                <span class="col-lg-2">
+                        <label class="seachFunc">按天份查询：</label>
+                       <input type="text" id="seachFunc" ng-model="SearchToDay" class="form-control"  onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd',onpicked: function(){$(this).trigger('change')}} )"
+                        placeholder="查询" />
+                </span>
+                <br/>
+                <span class="col-lg-1">
+                      <button class="btn btn-default" type="button" ng-click="ToDaySerach()">
+                          <a href="" class="glyphicon glyphicon-search">搜索</a>
+                      </button>
+                </span>
+                <div id="ToDayLoading">
+                    <div class="sk-fading-circle">
+                        <div class="sk-circle1 sk-circle"></div>
+                        <div class="sk-circle2 sk-circle"></div>
+                        <div class="sk-circle3 sk-circle"></div>
+                        <div class="sk-circle4 sk-circle"></div>
+                        <div class="sk-circle5 sk-circle"></div>
+                        <div class="sk-circle6 sk-circle"></div>
+                        <div class="sk-circle7 sk-circle"></div>
+                        <div class="sk-circle8 sk-circle"></div>
+                        <div class="sk-circle9 sk-circle"></div>
+                        <div class="sk-circle10 sk-circle"></div>
+                        <div class="sk-circle11 sk-circle"></div>
+                        <div class="sk-circle12 sk-circle"></div>
+                    </div>
+                    <h3>请稍等，数据加载中……</h3>
+                </div>
+            </div>
+            <br />
+            <div style="overflow:scroll; height:450px; width: 1100px;" id="table-scroll">
+                <table class="table table-responsive" id="tableToDay">
+                    <tr class="bg-info">
+                        <th>客户名称</th>
+                        <th>小号</th>
+                        <th>小号归属地</th>
+                        <th>话单记录数</th>
+                        <th>拒接数</th>
+                        <th>接通数</th>
+                        <th>回拨数</th>
+                        <th>回拨接通数</th>
+                        <th>回拨接通率%</th>
+                        <th>客服主动拨打</th>
+                        <th>总通话秒数</th>
+                        <th>接通平均通话秒数</th>
+                        <th>总平均通话秒数</th>
+                        <th>接通率</th>
+                        <th>总通话分钟数</th>
+                    </tr>
+                    <!-- <tr ng-repeat="list in ToDayToTD">
+                        <td ng-bind="list.duration"></td>
+                        <td ng-bind="list.acms"></td>
+                        <td ng-bind="list.district"></td>
+                        <td ng-bind="list.dial"></td>
+                        <td ng-bind="list.reject"></td>
+                        <td ng-bind="list.dial"></td>
+                        <td ng-bind="list.callback"></td>
+                        <td ng-bind="list.averageconn"></td>
+                        <td ng-bind="list.cdrno"></td>
+                        <td ng-bind="list.rateofconn"></td>
+                        <td ng-bind="list.rateofcallbackconn"></td>
+                        <td ng-bind="list.totalaverageconn"></td>
+                        <td ng-bind="list.minutes"></td>
+                    </tr> -->
+                    <!-- <tr><td>正在加载中……</td></tr> -->
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

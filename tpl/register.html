@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compitable" content="IE=edge,Chrome=1">
+    <link rel="stylesheet" href="../css/bootstrap.css"/>
+    <link rel="stylesheet" href="../css/style.css"/>
+    <link rel="icon" href="../img/ico.png">
+    <title>客户关系管理系统</title>
+    <script src="../js/angular.js"></script>
+</head>
+<body>
+<!-- -------------------注册页---------------------- -->
+<div class="modal-header bg-success">
+    <h2 class="modal-title text-center" id="myModalLabel1">
+        注册
+    </h2>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="firstname1" class="col-sm-4 control-label">用户名</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="firstname1" onblur="onb()" placeholder="请输入用户名">
+            </div>
+            <div class="col-sm-4">
+                <div id="user"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password1" class="col-sm-4 control-label">密码</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="password1" onblur="checkpwd()"  placeholder="请输入密码">
+            </div>
+            <div class="col-sm-4">
+                <div class="frbule" id="error1"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password2" class="col-sm-4 control-label">确认密码</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="password2"  onblur="rcheckpwd()" placeholder="请确认密码">
+            </div>
+            <div class="col-sm-4">
+                <div class="frbule" id="error2"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email" class="col-sm-4 control-label">邮箱</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="email" onblur="checkemail()" placeholder="请输入邮箱"/>
+            </div>
+            <div class="col-sm-4">
+                <div class="frbule" id="semail"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">所属行业</label>
+            <div class="col-sm-4">
+                <select name="" id="" class="form-control">
+                    <option value="">——请选择——</option>
+                    <option value="">金融</option>
+                    <option value="">IT</option>
+                    <option value="">医疗</option>
+                    <option value="">房地产</option>
+                    <option value="">交通</option>
+                    <option value="">旅游</option>
+                    <option value="">教育</option>
+                    <option value="">文化出版</option>
+                    <option value="">电子商务</option>
+                    <option value="">生活信息</option>
+                    <option value="">游戏</option>
+                    <option value="">在线社区</option>
+                    <option value="">其他</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-6">
+                <input type="checkbox" ng-model="myAgree"/>我同意本站条款！！！
+                <button class="btn btn-danger" ng-disabled="!myAgree">立即注册</button><!--ng-disabled禁用-->
+                <!--<button type="submit" class="btn btn-success" >立即注册</button>&lt;!&ndash;disabled="disabled"&ndash;&gt;-->
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="../js/jquery-1.12.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/form.js"></script><!--表单验证-->
+</body>
+</html>

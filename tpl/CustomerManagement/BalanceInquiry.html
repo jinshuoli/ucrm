@@ -1,0 +1,25 @@
+<div class="container" ng-controller="BalanceInquiry">
+    <div class="BalanceInquiry">
+        <h1>余额查询：</h1>
+        <p class="h3 text-warning">账户余额(元): <span ng-bind="Balance"></span></p>
+        <p class="h3 text-warning">账户级别： <span ng-bind="Level">代理、直客</span></p>
+        <br>
+        <div class="input-group">
+            <div class="input-group-btn">
+                <span class="btn btn-default">余额预警</span>
+            </div>
+            <select name="type" class="form-control" ng-model="num" ng-change="BalanceWarning(num)" required>
+                <option value="600">600</option>
+                <option value="800" selected>800</option>
+            </select>
+        </div>
+        
+        <br>
+        <div class="btn-group conter">
+            <a class="btn btn-success btn-lg" href="#/clarinoCallStatistics">充值记录</a>
+            <a class="btn  btn-danger btn-lg" href="#/UssdStatistics">ussd数据统计</a>
+            <a class="btn btn-warning btn-lg" href="#/SmsTrafficStatistics">短信业务量统计</a>
+        </div>
+        <div class="box_ribbon"></div>
+    </div>
+</div>

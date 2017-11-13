@@ -1,0 +1,257 @@
+<div class="container" ng-controller="CallBehavior">
+    <br>
+    <h3>通话行为分析:</h3>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;号外号云通信平台可为企业提供基于“外”号的通话行为分析与预警服务，帮助企业精细化管控 业务员的电话营销效果，并及时发现潜在的客户资源流失风险。
+    </p>
+    <!-- 查询条件 -->
+    <div class="row">
+        <span class="col-lg-offset-6 col-lg-2">
+            <label>时间：</label>
+            <input id="date" class="form-control" onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd',onpicked: function(){$(this).trigger('change')}} )" placeholder="选择时间" />
+        </span>
+        <span class="col-lg-2">
+            <label>号码：</label>
+            <input type="text" id="tel" class="form-control" placeholder="填写号码">
+        </span>
+        <br/>
+        <span class="col-lg-1">
+              <button class="btn btn-default" id="Serach" type="button">
+                  <a href="" class="glyphicon glyphicon-search">搜索</a>
+              </button>
+        </span>
+    </div>
+    <br>
+    <!-- 下面图表 -->
+    <div class="row">
+        <div id="ChartColumn1" class="col-lg-6"></div>
+        <div id="ChartColumn2" class="col-lg-6"></div>
+    </div>
+    <div class="row">
+        <div id="ChartArea" class="col-lg-6"></div>
+        <div id="ChartSpline" class="col-lg-6"></div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function() {
+    // 搜索
+    $("#Serach").click(function() {
+        if ($("#date").val() == "" || $("#tel").val() == "") {
+            alert("请填写时间和号码！")
+        } else {
+            var SerachDate = $("#date").val()
+            // 获取数据
+            $.ajax({
+                type: "GET",
+                url: 'data/CallBehavior.json',
+                data: {
+                    "SerachDate": SerachDate,
+                    "SerachNumber": $("#tel").val()
+                },
+                dataType: "json",
+                success: function(data) {
+                    // data = JSON.parse(chart);
+                    // console.log(data);
+                    AnalyticData(data, SerachDate)
+                },
+                error: function() {
+                    alert("获取数据失败！")
+                }
+            });
+        }
+    })
+    // 解析后台传来的数据
+    function AnalyticData(data, SerachDate) {
+
+        // 将数组内的 字符串类型 转换为 number类型
+        var ColumnTimesArr1 = data.oneTime.map(function(x) {return +x})
+        var ColumnTimesArr2 = data.durationY.map(function(x) {return +x})
+        var AreaAllTimesArr = data.ThreeTimes.map(function(x) {return +x})
+
+        var ColumnHourArr2 = ["0-2分钟","3-5分钟","6-8分钟","9-11分钟","12分钟及以上"];
+        // 将解析后的数据传递下去
+        RenderChart(
+            ColumnTimesArr1,
+            data.oneHour,
+            ColumnTimesArr2,
+            ColumnHourArr2,
+            AreaAllTimesArr,
+            data.ThreeHour,
+            /*SplineArr,*/
+            SerachDate)
+    }
+    // 渲染图表
+    function RenderChart(
+        ColumnTimesArr1,
+        ColumnHourArr1,
+        ColumnTimesArr2,
+        ColumnHourArr2,
+        AreaAllTimesArr,
+        AreaAllHourArr,
+        /*SplineArr,*/
+        SerachDate) {
+        //--------------------1 柱状图------------------
+        var ColumnJson1 = {};
+
+        ColumnJson1.chart = {
+            type: 'column'
+        };
+        ColumnJson1.title = {
+            text: SerachDate.slice(0, SerachDate.length - 3).replace(/\-/, "年") + ' 月平均通话次数'
+        };
+
+        ColumnJson1.xAxis = {
+            categories: ColumnHourArr1
+        };
+        ColumnJson1.yAxis = {
+            min: 0,
+            title: {
+                text: '次数/小时'
+            }
+        };
+        ColumnJson1.tooltip = {
+            headerFormat: '<span style="font-size:10px">{series.name}</span>' +
+                '<table><tr><td style="padding:0"><b>{point.key}时: </b></td>',
+            pointFormat: '<td style="color:{series.color};padding:0"> {point.y}/次</td></tr>',
+            footerFormat: '</table>',
+            useHTML: true
+        };
+        ColumnJson1.plotOptions = {
+            column: {
+                pointPadding: 0.2,
+            }
+        };
+
+        ColumnJson1.series = [{
+            name: '平均通话次数',
+            setData: ColumnTimesArr1,
+            data: ColumnTimesArr1,
+            color: "#ff8001"
+        }];
+
+        $('#ChartColumn1').highcharts(ColumnJson1);
+        //--------------------2 柱状图------------------
+        var ColumnJson2 = {};
+
+        ColumnJson2.chart = {
+            type: 'column'
+        };
+        ColumnJson2.title = {
+            text: SerachDate.slice(0, SerachDate.length - 3).replace(/\-/, "年") + ' 月平均通话时长'
+        };
+
+        ColumnJson2.xAxis = {
+            categories: ColumnHourArr2
+        };
+        ColumnJson2.yAxis = {
+            min: 0,
+            title: {
+                text: '次数/分钟'
+            }
+        };
+        ColumnJson2.tooltip = {
+            headerFormat: '<span style="font-size:10px">{series.name}</span>' +
+                '<table><tr><td style="padding:0"><b>{point.key}: </b></td>',
+            pointFormat: '<td style="color:{series.color};padding:0"> {point.y}/次</td></tr>',
+            footerFormat: '</table>',
+            useHTML: true
+        };
+        ColumnJson2.plotOptions = {
+            column: {
+                pointPadding: 0.2,
+            }
+        };
+
+        ColumnJson2.series = [{
+            name: '平均通话时长',
+            setData: ColumnTimesArr2,
+            data: ColumnTimesArr2,
+            color: "#80c41c"
+        }];
+
+        $('#ChartColumn2').highcharts(ColumnJson2);
+        //--------------------3 曲线区域图------------------
+        var AreaJson = {};
+
+        AreaJson.chart = {
+            type: 'areaspline'
+        };
+        AreaJson.title = {
+            text: SerachDate.replace("-","年").replace("-","月") + '日 企业全员通话次数分布'
+        };
+        AreaJson.xAxis = {
+            categories: AreaAllHourArr
+        };
+        AreaJson.yAxis = {
+            title: {
+                text: '次数/小时'
+            }
+        };
+        AreaJson.tooltip = {
+            headerFormat: '<span style="font-size:10px">{series.name}</span>' +
+                '<table><tr><td style="padding:0"><b>{point.key}时: </b></td>',
+            pointFormat: '<td style="color:{series.color};padding:0"> {point.y}</td></tr>',
+            footerFormat: '</table>',
+            useHTML: true,
+            shared: true,
+            valueSuffix: '/次数'
+        };
+        AreaJson.plotOptions = {
+            areaspline: {
+                fillOpacity: 0.5
+            }
+        };
+        AreaJson.series = [{
+            name: '全员通话次数',
+            color: "#01a0c6",
+            setData: AreaAllTimesArr,
+            data: AreaAllTimesArr
+        }];
+        $('#ChartArea').highcharts(AreaJson);
+
+        //--------------------4 曲线图------------------
+        var SplineJson = {};
+
+        SplineJson.chart = {
+            type: 'spline'
+        };
+        SplineJson.title = {
+            text: SerachDate.substr(0, 4) + ' 年客户与企业通话频次分布'
+        };
+        SplineJson.xAxis = {
+            categories: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        };
+        SplineJson.yAxis = {
+            title: {
+                text: '次数/月份'
+            },
+            lineWidth: 2
+        };
+        SplineJson.tooltip = {
+            headerFormat: '<span style="font-size:10px">{series.name}</span>' +
+                '<table><tr><td style="padding:0"><b>{point.key}时: </b></td>',
+            pointFormat: '<td style="color:{series.color};padding:0"> {point.y}/次</td></tr>',
+            footerFormat: '</table>',
+            useHTML: true,
+            crosshairs: true,
+            shared: true
+        };
+        SplineJson.plotOptions = {
+            spline: {
+                marker: {
+                    radius: 4,
+                    lineColor: '#666666',
+                    lineWidth: 1
+                }
+            }
+        };
+        SplineJson.series = [{
+            name: '企业通话频次分布',
+            color: "#ce0a09",
+            setData: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 23.3, 18.3, 13.9, 9.6],
+            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 23.3, 18.3, 13.9, 9.6]
+        }];
+
+        $('#ChartSpline').highcharts(SplineJson);
+    }
+});
+</script>

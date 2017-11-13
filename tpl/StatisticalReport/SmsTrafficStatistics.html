@@ -1,0 +1,94 @@
+<div class="container" ng-controller="SmsTrafficStatistics">
+    <div class="row">
+        <h4 class="col-lg-2">
+               短信业务量统计：
+        </h4>
+        <br>
+         <span class="col-lg-2">
+        <label>导出方式：</label>
+           <select class="form-control" id="selectedSmsTrafficStatistics">
+               <option value="xls">导出Excel</option>
+               <option value="csv">导出CSV</option>
+               <option value="txt">导出TXT</option>
+               <option value="json">导出JSON</option>
+           </select>
+           </span>
+           <span class="col-lg-1">
+           <button class="btn btn-success" style="margin-top: 20px;" id="exportSmsTrafficStatistics">导出</button>
+        </span>
+
+        <div class="bubble-box arrow-right">
+            <div class="wrap">客户名称和查询方式不能为空！</div>
+        </div>
+        <span class="col-lg-2">
+                <label>客户名称：</label>
+               <input type="text" class="form-control"  ng-model="STSCustomerName" placeholder="请输入客户名"/>
+        </span>
+    
+        <span class="col-lg-2">
+                <label class="seachFunc">开始时间：</label>
+               <input type="text" id="StartDate" ng-model="STSStartDate" class="form-control" onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked: function(){$(this).trigger('change')},maxDate:'#F{$dp.$D(\'EndDate\')}'})"
+                placeholder="开始时间" required />
+        </span>  
+         <span class="col-lg-2">
+                <label class="seachFunc">结束时间：</label>
+               <input type="text" id="EndDate" ng-model="STSEndDate" class="form-control"  onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked: function(){$(this).trigger('change')},minDate:'#F{$dp.$D(\'StartDate\')}'})"
+                placeholder="结束时间" required />
+        </span>
+        <br/>
+        <span class="col-lg-1">
+              <button class="btn btn-default" type="button" ng-click="SmsTrafficSerach()">
+                  <a href="" class="glyphicon glyphicon-search">搜索</a>
+              </button>
+        </span>
+    </div>
+    <br />
+    <div id="loading2">
+        <div class="sk-fading-circle">
+            <div class="sk-circle1 sk-circle"></div>
+            <div class="sk-circle2 sk-circle"></div>
+            <div class="sk-circle3 sk-circle"></div>
+            <div class="sk-circle4 sk-circle"></div>
+            <div class="sk-circle5 sk-circle"></div>
+            <div class="sk-circle6 sk-circle"></div>
+            <div class="sk-circle7 sk-circle"></div>
+            <div class="sk-circle8 sk-circle"></div>
+            <div class="sk-circle9 sk-circle"></div>
+            <div class="sk-circle10 sk-circle"></div>
+            <div class="sk-circle11 sk-circle"></div>
+            <div class="sk-circle12 sk-circle"></div>
+        </div>
+        <h3>请稍等，数据加载中……</h3>
+    </div>
+    <div style="overflow:scroll; height:450px; width: 1100px;">
+        <table class="table table-responsive" id="tableSmsTrafficStatistics">
+            <tr class="bg-info">
+                <td>日期</td>
+                <td>客户名称</td>
+                <td>业务类型</td>
+                <td>业务量</td>
+                <td>成功数</td>
+                <td>失败数</td>
+                <td>业务到达率</td>
+            </tr>
+            <tr ng-repeat="list in SmsTrafficToTD">
+                <td ng-bind="list.date.time|date:'yyyy-MM-dd  hh:mm:ss'"></td>
+                <td ng-bind="list.custName"></td>
+                <td ng-bind="list.rateofincr"></td>
+                <td ng-bind="list.rateofincr  | number:2"></td>
+                <td ng-bind="list.succ"></td>
+                <td ng-bind="list.fail"></td>
+                <td ng-bind="list.rateofsucc"></td>
+            </tr>
+            <tr ng-repeat="item in ArrSum">
+                <td >总计：</td>
+                <td ></td>
+                <td ng-bind="item.sumRateofincr  | number:2"></td>
+                <td ng-bind="item.sumRateofincr  | number:2"></td>
+                <td ng-bind="item.sumSucc"></td>
+                <td ng-bind="item.sumFail"></td>
+                <td ng-bind="item.sumRateofsucc | number:2"></td>
+            </tr>
+        </table>
+    </div>
+</div>

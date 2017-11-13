@@ -1,0 +1,12 @@
+[{
+    "acctName": "瓜子网",
+    "cName": "瓜子网",
+    "acctCode": "guazinet",
+    "aType": "POST_PAID",
+    "payMethod": "现金",
+    "lastBal": 0,
+    "grossBal": 0,
+    "acctResName": "",
+    "createUser": "",
+    "customertype": "ussd"
+}]

@@ -1,0 +1,147 @@
+<div class="container" ng-controller="bill">
+    <br>
+    <div class="row">
+        <span class="col-lg-3">
+           <select class="form-control" id="selected">
+               <option value="xls">导出Excel</option>
+               <option value="csv">导出CSV</option>
+               <option value="txt">导出TXT</option>
+               <option value="json">导出JSON</option>
+           </select>
+           </span>
+        <span class="col-lg-1">
+           <button class="btn btn-success" id="export">导出</button>
+        </span>
+        <span class="col-lg-offset-2 col-lg-2">
+                <label>电话号码：</label>
+                <input type="text" id="tel" ng-model="SearchForm.tel" class="form-control" placeholder="搜索……"
+                 >
+            </span>
+        <span class="col-lg-2">
+                <label>月份：</label>
+               <input type="text" id="month" ng-model="SearchForm.month" class="form-control"
+                onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM',onpicked: function(){$(this).trigger('change')}} ) " placeholder="搜索……">
+            </span>
+        <br/>
+        <span class="col-lg-1">
+              <button class="btn btn-default Serach" type="button" ng-click="billSerach()">
+                  <a href="" class="glyphicon glyphicon-search">搜索</a>
+              </button>
+            </span>
+    </div>
+    <br />
+    <div style="overflow:scroll; height:450px; width: 1100px;">
+        <table class="table table-responsive" id="TebleBill">
+            <tr class="bg-info">
+                <th>月份</th>
+                <th>客户名称</th>
+                <th>区域</th>
+                <th>小号</th>
+                <th>axb呼叫(分钟)</th>
+                <th>转接呼叫(分钟)</th>
+                <th>套餐分钟数</th>
+                <th>套餐费用</th>
+                <th>总费用</th>
+            </tr>
+            <tr ng-repeat="list in billTD">
+                <td ng-bind="list.billMonth"></td>
+                <td ng-bind="list.custname"></td>
+                <td ng-bind="list.provinces"></td>
+                <td ng-bind="list.acms"></td>
+                <td ng-bind="list.axbMinutes"></td>
+                <td ng-bind="list.abcvoice"></td>
+                <td ng-bind="list.IVoiceMinutes"></td>
+                <td ng-bind="list.IPackageFee/100| number:2"></td>
+                <td ng-bind="list.totalfee/100"></td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <!-- 下面是图表 -->
+    <div class="row">
+        <div id="chart" class="col-lg-offset-2 col-lg-8"></div>
+    </div>
+</div>
+<script src="js/FileSaver.js"></script>
+<script src="js/tableExport.js"></script>
+<script type="text/javascript">
+// 导出表格
+var $exportLink = document.getElementById('export');
+$exportLink.addEventListener('click', function(e) {
+    $exportLink.setAttribute("data-type", $("#selected").find("option:selected").val())
+    tableExport('TebleBill', '文件名', e.target.getAttribute('data-type'));
+}, false);
+
+// 点击搜索
+$(".Serach").click(function() {
+    $.ajax({
+        type: "GET",
+        url: 'data/bill.json',
+        data: {
+            "tel": $("#tel").val(),
+            "month": $("#month").val()
+        },
+        dataType: "json",
+        success: function(data) {
+            // data = JSON.parse(chart);
+            HandleData(data)
+        },
+        error: function() {}
+    })
+});
+
+// 处理数据
+function HandleData(data) {
+    var abmN = 0,
+        abvN = 0,
+        tlfN = 0;
+    for (var i = 0; i < data.length; i++) {
+        abmN += data[i].axbMinutes;
+        abvN += data[i].abcvoice;
+        tlfN += data[i].totalfee;
+    }
+    renderChart(abmN, abvN, tlfN)
+}
+
+// 渲染图表
+function renderChart(abmN, abvN, tlfN) {
+    // 图表--1
+    var chartJson = {};
+
+    chartJson.chart = {
+        type: 'column'
+    };
+    chartJson.title = {
+        text: $("#tel").val() + "通话总账单"
+    };
+    chartJson.yAxis = {
+        min: 0,
+        title: {
+            text: '通话/分钟'
+        }
+    };
+    chartJson.tooltip = {
+        headerFormat: '<b>通话总账单</b><br>',
+        pointFormat: '<span style="color:{series.color}">\u25CF</span> {series.name}：{point.y}'
+    };
+    chartJson.plotOptions = {
+        column: {
+            pointPadding: 0.2,
+        }
+    };
+    chartJson.series = [{
+        name: 'axb呼叫(分钟)',
+        setData: [abmN],
+        data: [abmN]
+    }, {
+        name: '转接呼叫(分钟)',
+        setData: [abvN],
+        data: [abvN]
+    }, {
+        name: '总费用',
+        setData: [tlfN],
+        data: [tlfN]
+    }];
+
+    $('#chart').highcharts(chartJson);
+}

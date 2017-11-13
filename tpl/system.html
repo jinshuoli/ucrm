@@ -1,0 +1,34 @@
+<br />
+<div class="container" ng-controller="myTable">
+    <h3>系统属性</h3>
+    <hr />
+    <button class="btn btn-warning" ng-click="BuySMS()"><span class="glyphicon glyphicon-comment"></span> 购买短信</button>
+    <button class="btn btn-primary" ng-click="trumpet()"><span class="glyphicon glyphicon-copyright-mark"></span> 购买小号</button>
+    <button class="btn btn-info" ng-click="USSD()"><span class="glyphicon glyphicon-magnet"></span> 购买USSD</button>
+    <br/>
+    <table class="table table-striped" id="myTable">
+        <tr>
+            <th>产品 ID</th>
+            <th>属性名</th>
+            <th>属性值</th>
+            <th>金额</th>
+            <th>日期</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="pro in td">
+            <!--$index是下标，Pro是函数，Pro在td方法内循环。-->
+            <td>{{$index+1}}</td>
+            <!--$index是下标-->
+            <td>{{pro.name}}</td>
+            <!--函数在方法内循环输出-->
+            <td>{{pro.value}}</td>
+            <td>{{pro.moery}}</td>
+            <td>{{pro.time|date:'yyyy-MM-dd'}}</td>
+            <td>
+                <input type="button" class="btn btn-danger" value="删除" onclick="Delete(this.parentNode.parentNode);">
+                <!--删除当前行-->
+                <input type="button" class="btn btn-success" value="修改" onclick="xiu(this)">
+            </td>
+        </tr>
+    </table>
+</div>

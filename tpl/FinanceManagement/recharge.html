@@ -1,0 +1,141 @@
+<div class="container row" ng-controller="recharge">
+    <h2><span class="glyphicon glyphicon-usd"></span>充值</h2>
+    <div class="row">
+        <span class="col-lg-offset-4 col-lg-2">
+           <label>客户类型：</label>
+            <select class="form-control" id="customertype" ng-model="searchPaymentForm.customertype">
+                <option value="">--请选择--</option>
+                <option value="voice">语音</option>
+                <option value="sms">短信</option>
+                <option value="ussd">USSD</option>
+            </select>
+        </span>
+        <span class="col-lg-2">
+            <label>账户名称：</label>
+            <input type="text" ng-model="searchPaymentForm.acctName" class="form-control" placeholder="搜索……">
+        </span>
+        <span class="col-lg-2">
+            <label>客户名称：</label>
+            <input type="text" ng-model="searchPaymentForm.custName" class="form-control" placeholder="搜索……">
+        </span>
+        <br/>
+        <span class="col-lg-1">
+          <button class="btn btn-default" ng-click="searchPayment()" type="button"><a href="" class="glyphicon glyphicon-search">搜索</a></button>
+        </span>
+    </div>
+    <br/>
+    <table class="table table-responsive">
+        <tr class="btn-info">
+            <th>序号</th>
+            <th>账户名称</th>
+            <th>所属客户</th>
+            <th>账户编号</th>
+            <th>账户类型</th>
+            <th>支付方式</th>
+            <th>上次余额</th>
+            <th>账户总额</th>
+            <th>余额类型</th>
+            <th>操作者</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="list in TdItem">
+            <td>{{$index+1}}</td>
+            <td>{{list.acctName}}</td>
+            <td>{{list.cName}}</td>
+            <td>{{list.acctCode}}</td>
+            <td>{{list.aType}}</td>
+            <td ng-switch on="list.payMethod">
+                <span ng-switch-when="1">银行卡</span>
+                <span ng-switch-when="2">支票</span>
+                <span ng-switch-when="3">现金</span>
+                <span ng-switch-when="4">电子支付</span>
+            </td>
+            <td ng-show="list.lastBal==null">0</td>
+            <td ng-show="list.lastBal!=null">{{list.lastBal| number:2}}</td>
+            <td ng-show="list.grossBal==null">0</td>
+            <td ng-show="list.grossBal!=null">{{list.grossBal| number:2}}</td>
+            <td>{{list.acctResName}}</td>
+            <td>{{list.createUser}}</td>
+            <td>
+                <input type="button" class="btn btn-success" ng-click="paymentTd($index,list.acctId,list.custId)" value="充值" data-toggle="modal" data-target="#myModal">
+            </td>
+        </tr>
+    </table>
+    <!--下面是弹出框的页面-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <div class="modal-content">
+                <!--背景、边框、阴影-->
+                <div class="modal-header btn-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel11">充值</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <h4>  <span class="glyphicon glyphicon-user"></span>账户名称:{{acctName}}</h4>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <h4> <span class="glyphicon glyphicon-list"></span>账户总额:{{grossBal}}</h4>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group" ng-if="customertype[0].customertype == 'voice'">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">充值金额</span>
+                        </div>
+                        <input id="amount" type="number" class="form-control">
+                    </div>
+                    <div class="input-group" ng-if="customertype[0].customertype == 'sms'">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">短信充值</span>
+                        </div>
+                        <select class="form-control" id="customertype" ng-model="searchPaymentForm.customertype">
+                        <option value="">--请选择--</option>
+                        <option value="16">16套餐</option>
+                        <option value="26">26套餐</option>
+                        <option value="36">36套餐</option>
+                    </select>
+                    </div>
+                    <div class="input-group" ng-if="customertype[0].customertype == 'ussd'">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">USSD充值</span>
+                        </div>
+                        <select class="form-control" id="customertype" ng-model="searchPaymentForm.customertype">
+                            <option value="">--请选择--</option>
+                            <option value="16">16套餐</option>
+                            <option value="26">26套餐</option>
+                            <option value="36">36套餐</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" ng-click="paymentAddOk()" data-dismiss="modal">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--下面是分页-->
+    <nav>
+        <ul class="pagination paging pull-right">
+            <li>
+                <a ng-click="Previous()">
+                    <span>上一页</span>
+                </a>
+            </li>
+            <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                <a ng-click="selectPage(page)">{{ page }}</a>
+            </li>
+            <li>
+                <a ng-click="Next()">
+                    <span>下一页</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

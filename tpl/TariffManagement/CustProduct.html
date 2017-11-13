@@ -1,0 +1,182 @@
+<div class="container row" ng-controller="custproduct">
+    <h3>客户资费</h3>
+    <hr/>
+    <div class="row">
+        <span class=" col-lg-offset-5 col-lg-2">
+            <label>客户名称：</label>
+            <input type="text" ng-model="SearchForm.name" class="form-control" placeholder="搜索……">
+        </span>
+        <span class="col-lg-2">
+            <label>客户类型：</label>
+           <select class="form-control" ng-model="SearchForm.type" placeholder="搜索……">
+               <option value="">——请选择——</option>
+               <option value="AP">代理客户有自营平台</option>
+               <option value="AN">代理客户无自营平台</option>
+               <option value="DP">直客有自营平台</option>
+               <option value="DN">直客无自营平台</option>
+           </select>
+        </span>
+        <br/>
+        <span class="col-lg-1">
+          <button class="btn btn-default" type="button" ng-click="productSearch()">
+              <a href="" class="glyphicon glyphicon-search">搜索</a>
+          </button>
+        </span>
+    </div>
+    <br/>
+    <!--产品表格-->
+    <table class="table table-responsive">
+        <tr class="bg-info">
+            <td>选项</td>
+            <td>客户名称</td>
+            <td>客户编号</td>
+            <td>客户类型</td>
+            <td>创建日期</td>
+            <td>操作</td>
+        </tr>
+        <tr ng-repeat="list in TdItem">
+            <td>
+                <input type="radio" ng-value="list.pricePlanId" ng-checked="0 == $index" ng-click="withinProduct($index)" name="product">
+            </td>
+            <td>{{list.cName}}</td>
+            <td>{{list.cCode}}</td>
+            <td ng-switch on="list.cType">
+                <span ng-switch-when="AP">代理客户有自营平台</span>
+                <span ng-switch-when="AN">代理客户无自营平台</span>
+                <span ng-switch-when="DP">直客有自营平台</span>
+                <span ng-switch-when="DN">直客无自营平台</span>
+            </td>
+            <td>{{list.createTime.time|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>
+                <input type="button" class="btn btn-success" ng-show="list.pricePlanId!=null" value="变更" ng-click='productTDChange(list.pricePlanId,$index)' data-toggle="modal" data-target="#myModal">
+                <input type="button" class="btn btn-warning" ng-show="list.pricePlanId==null" value="添加" ng-click='productTDChange(list.pricePlanId,$index)' data-toggle="modal" data-target="#myModal"> </td>
+        </tr>
+    </table>
+    <!--下面添加是弹出框的页面-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <form class="modal-content" role="form" name="signUpForm">
+                <!--背景、边框、阴影-->
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel11" ng-model="changePricePlanCust">
+                        [{{changePricePlanCust}}]添加套餐</h4>
+                </div>
+                <h3 style="color:#71211F" ng-model="des">{{des}}</h3>
+                <div class="modal-body" ng-hide="notes==true">
+                    <div class="row">
+                        <span class="col-lg-4">
+                        <label>资费名称：</label>
+                        <input type="text" ng-model="RelaSearchForm.pricePlanName" class="form-control"
+                               placeholder="搜索……">
+                    </span>
+                        <span class="col-lg-4">
+                        <label>状态：</label>
+                         <select class="form-control" id="RelaSelect" ng-model="RelaSearchForm.serviceId">
+                             <option value="">——请选择———</option>
+                             <option ng-repeat="(key,value) in RelaSelect" value="{{key}}">{{value}}</option>
+                         </select>
+                    </span>
+                        <br/>
+                        <span class="col-lg-1">
+                      <button class="btn btn-default" type="button" ng-click="product_relaSearch()"><a href="" class="glyphicon glyphicon-search">搜索</a>
+                      </button>
+                    </span>
+                    </div>
+                    <br/>
+                    <table class="table table-bordered">
+                        <tr class="bg-info">
+                            <th>序号</th>
+                            <th>资费名称</th>
+                            <th>资费编号</th>
+                            <th>资费描述</th>
+                            <th>服务</th>
+                        </tr>
+                        <tr ng-repeat="list in changeProductRelaTD" id="Rela">
+                            <td>
+                                <input type="radio" name="id" ng-value="list.priceplanId" ng-click="withinProduct_rela(list.priceplanId)">
+                            </td>
+                            <td ng-bind="list.name"></td>
+                            <td ng-bind="list.code"></td>
+                            <td ng-bind="list.des"></td>
+                            <td><span ng-repeat="(key,value) in RelaSelect" ng-show="list.serviceId== {{key}}">{{value}}</span></td>
+                        </tr>
+                    </table>
+                    <!--下面是分页-->
+                    <nav style="margin-bottom: 80px;">
+                        <ul class="pagination paging pull-right">
+                            <li>
+                                <a ng-click="HomePageC()">
+                                    <span>首页</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="PreviousC()">
+                                    <span>上一页</span>
+                                </a>
+                            </li>
+                            <li ng-repeat="page in PageList" ng-class="{active: IsActivePage(page)}">
+                                <a ng-click="SelectPage(page)">{{ page }}</a>
+                            </li>
+                            <li>
+                                <a ng-click="NextC()">
+                                    <span>下一页</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="EndC()">
+                                    <span>末页</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal" ng-hide="notes==true" ng-click="product_relaChangeOk()" ng-disabled="!yesno">确认
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--下面是分页-->
+    <nav>
+        <ul class="pagination paging pull-right">
+            <li>
+                <a ng-click="Previous()">
+                    <span>上一页</span>
+                </a>
+            </li>
+            <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                <a ng-click="selectPage(page)">{{ page }}</a>
+            </li>
+            <li>
+                <a ng-click="Next()">
+                    <span>下一页</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <br/>
+    <h3>已用资费详情：</h3>
+    <table class="table table-bordered">
+        <tr class="bg-danger">
+            <th>序号</th>
+            <th>资费名称</th>
+            <th>资费编号</th>
+            <th>资费描述</th>
+            <th>服务</th>
+        </tr>
+        <tr ng-repeat="list in product_relaTD">
+            <td>{{$index+1}}</td>
+            <td>{{list.name}}</td>
+            <td>{{list.code}}</td>
+            <td>{{list.des}}</td>
+            <!--             <td>{{list.serviceId}}</td> -->
+            <td>
+                <span ng-repeat="(key,value) in RelaSelect" ng-show="list.serviceId=={{key}}">{{value}}</span>
+            </td>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>忘记密码-号外号</title>
+	<link rel="stylesheet" type="text/css" href="http://101.201.101.70:1024/assets/style/index.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<nav id="nav">
+        <div class="items">
+            <img src="http://101.201.101.70:1024/assets/images/logo.gif" width="60" height="60">
+            <div class="title-item">
+                <h2 style="margin-top: -3px;"><a href="http://101.201.101.70:1024/index.html">号 外 号</a></h2>
+            </div>
+            <div class="tab-item">
+                <a href="http://101.201.101.70:1024/index.html">首页</a>
+            </div>
+            <div class="tab-item">
+                <a href="http://101.201.101.70:1024/views/product.html">产品</a>
+            </div>
+            <div class="tab-item">
+                <a href="http://101.201.101.70:1024/views/price.html">价格</a>
+            </div>
+            <div class="tab-item">
+                <a href="http://101.201.101.70:1024/views/experience.html">体验</a>
+            </div>
+            <div class="tab-item">
+                <a href="http://101.201.101.70:1024/views/APIdoc.html">开发文档</a>
+            </div>
+            <div class="tab-item">
+                <a href="http://101.201.101.70:1024/views/help.html">帮助</a>
+            </div>
+            <div class="right-item">
+                <a class="register" href="http://101.200.221.216:9080/ucrm/">登陆</a>
+            </div>
+            <div class="right-item">
+                <a class="login" href="http://101.200.221.216:9080/ucrm/register_toRegister.action">注册</a>
+            </div>
+        </div>
+    </nav>
+    
+	<section class="wrap">
+		<ul class="items">
+			<h3>找回密码</h3>
+			<li>
+				<label for="username"><i> * </i> 账户名：</label>
+				<input type="text" id="username" onBlur="leave()" onfocus="" placeholder="邮箱/手机号" />
+				<p class="username-error"></p>
+			</li>
+			<li>
+				<label for="randCode"><i> * </i> 验证码：</label>
+				<input type="text" id="randCode" />
+				<span id="randCodeImg"></span>
+				<p class="randCode-error"></p>
+			</li>
+			<li class="block">
+				<button type="submit" class="btn-blue" id="submit" onclick="toBackstage()">确定</button>
+			</li>
+		</ul>
+	</section>
+	<footer class="bottom"><br>
+		<p>© Copyright 2017 号外号平台 All Rights Reserved 号外号(北京)科技有限公司</p>
+		<p>增值电信业务经营许可证：B2-20090494 电信与信息服务业务经营许可证：京ICP证130398号 ICP备案：京ICP备17026061号</p>
+	</footer>
+</body>
+<script src="js/randCode.min.js"></script>
+<script>
+	var uName = document.getElementById('username'),
+		inp = document.getElementById('randCode'),
+		code = document.getElementById('randCodeImg'),
+		subMit = document.getElementById('submit'),
+		uError = document.getElementsByClassName('username-error')[0],
+		rError = document.getElementsByClassName('randCode-error')[0],
+		isME,isUC;
+		// 鼠标离开用户名输入框的判断
+		function leave(){
+			if (uName.value == "") {
+				uError.innerText = "请填写注册邮箱或手机";
+				isUC = false;
+			}else if( /\w+[@]{1}\w+[.]\w+/.test(uName.value) ) {
+				uError.innerText = "";
+				isME = "email";
+				isUC = true;
+			}else if( /^1[3|4|5|8][0-9]\d{4,8}$/.test(uName.value) ){
+				uError.innerText = "";
+				isME = "phone";
+				isUC = true;
+			}else{
+				uError.innerText = "请输入正确的手机或邮箱";
+				isUC = false;
+			}
+		};
+		// 验证码判断
+		var c = new KinerCode({
+		    len: 4,
+		    chars: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+		    randomBg: true,	//若选true则采用随机背景颜色，此时设置的bgImg和bgColor将失效
+		    inputArea: inp,	//输入验证码的input对象绑定【 HTMLInputElement 】
+		    codeArea: code,	//验证码放置的区域【HTMLDivElement 】
+		    click2refresh: true,	//是否点击验证码刷新验证码
+		    false2refresh: true,	//在填错验证码后是否刷新验证码
+		    validateEven: "blur",	//触发验证的方法名，如click，blur等
+		    validateFn: function(result, code) { //验证回调函数
+		        if (result) {
+		            // alert('验证成功');
+		            rError.innerText = "";
+		       		isUC = true;
+		       		leave()
+		        } else {
+		        	isUC = false;
+	            	this.opt.inputArea.value == "" 
+	            	? rError.innerText  = '验证码不能为空!'
+	                : rError.innerText  = '验证码错误!'
+		        }
+	   		}
+		});
+		// 确认
+	    function toBackstage(){
+	     	// 如果验证码和用户名都正确
+			if (isUC) {
+				var path = "后台路径";
+				var data = {"username": uName.value,
+							"isME": isME}; 
+				console.log(data)
+				var ajax = new XMLHttpRequest();
+				ajax.open("POST",path);
+				// ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded"); 
+				ajax.send(data);
+				ajax.onload = function(){
+					if (ajax.readyState == 4 && ajax.status == 200) {
+						if (isME == "phone") {
+							ajax.responseText 
+							? window.location.href="SMSCode.html" 
+							: alert("找回密码失败!")
+						}else if (isME == "email") {
+							ajax.responseText 
+							? window.location.href="PromptEmail.html?"+uName.value 
+							: alert("找回密码失败!")
+						}
+					}
+				}
+			}else{
+				window.location.href="PromptEmail.html?"+uName.value 
+					alert("请填写正确的账户名或验证码！")
+			}
+	    }
+
+</script>
+</html>

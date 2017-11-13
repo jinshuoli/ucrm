@@ -1,0 +1,393 @@
+﻿[{
+    "succ": 0,
+    "rateofincr": 0,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1485878400000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 3, "date": 1 }
+}, {
+    "succ": 0,
+    "rateofincr": 0,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1485878400000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 3, "date": 1 }
+}, {
+    "succ": 0,
+    "rateofincr": 0,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1485964800000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 4, "date": 2 }
+}, {
+    "succ": 0,
+    "rateofincr": 0,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1485964800000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 4, "date": 2 }
+}, {
+    "succ": 0,
+    "rateofincr": 0,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1486051200000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 5, "date": 3 }
+}, {
+    "succ": 0,
+    "rateofincr": 0,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1486051200000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 5, "date": 3 }
+}, {
+    "succ": 0,
+    "rateofincr": 0,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1486137600000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 6, "date": 4 }
+}, {
+    "succ": 0,
+    "rateofincr": 0,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1486137600000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 6, "date": 4 }
+}, {
+    "succ": 0,
+    "rateofincr": 0,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1486224000000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 0, "date": 5 }
+}, {
+    "succ": 0,
+    "rateofincr": 0,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1486224000000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 0, "date": 5 }
+}, {
+    "succ": 0,
+    "rateofincr": 0,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1486310400000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 1, "date": 6 }
+}, {
+    "succ": 0,
+    "rateofincr": 0,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1486310400000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 1, "date": 6 }
+}, {
+    "succ": 1338,
+    "rateofincr": 0,
+    "fail": 81,
+    "rateofsucc": 94.29,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1486396800000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 2, "date": 7 }
+}, {
+    "succ": 0,
+    "rateofincr": 0,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1486396800000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 2, "date": 7 }
+}, {
+    "succ": 0,
+    "rateofincr": 92.25,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1486483200000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 3, "date": 8 }
+}, {
+    "succ": 2635,
+    "rateofincr": 92.25,
+    "fail": 93,
+    "rateofsucc": 96.59,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1486483200000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 3, "date": 8 }
+}, {
+    "succ": 2581,
+    "rateofincr": -0.9199999999999999,
+    "fail": 122,
+    "rateofsucc": 95.49,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1486569600000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 4, "date": 9 }
+}, {
+    "succ": 0,
+    "rateofincr": -0.9199999999999999,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1486569600000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 4, "date": 9 }
+}, {
+    "succ": 2306,
+    "rateofincr": -11.1,
+    "fail": 97,
+    "rateofsucc": 95.96,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1486656000000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 5, "date": 10 }
+}, {
+    "succ": 0,
+    "rateofincr": -11.1,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1486656000000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 5, "date": 10 }
+}, {
+    "succ": 1942,
+    "rateofincr": -15.02,
+    "fail": 100,
+    "rateofsucc": 95.1,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1486742400000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 6, "date": 11 }
+}, {
+    "succ": 0,
+    "rateofincr": -15.02,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1486742400000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 6, "date": 11 }
+}, {
+    "succ": 0,
+    "rateofincr": -7.93,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1486828800000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 0, "date": 12 }
+}, {
+    "succ": 1773,
+    "rateofincr": -7.93,
+    "fail": 107,
+    "rateofsucc": 94.31,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1486828800000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 0, "date": 12 }
+}, {
+    "succ": 2434,
+    "rateofincr": 38.3,
+    "fail": 166,
+    "rateofsucc": 93.62,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1486915200000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 1, "date": 13 }
+}, {
+    "succ": 0,
+    "rateofincr": 38.3,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1486915200000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 1, "date": 13 }
+}, {
+    "succ": 1999,
+    "rateofincr": -16.42,
+    "fail": 174,
+    "rateofsucc": 91.99,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1487001600000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 2, "date": 14 }
+}, {
+    "succ": 0,
+    "rateofincr": -16.42,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1487001600000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 2, "date": 14 }
+}, {
+    "succ": 0,
+    "rateofincr": 15.46,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1487088000000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 3, "date": 15 }
+}, {
+    "succ": 2335,
+    "rateofincr": 15.46,
+    "fail": 174,
+    "rateofsucc": 93.06,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1487088000000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 3, "date": 15 }
+}, {
+    "succ": 2765,
+    "rateofincr": 17.78,
+    "fail": 190,
+    "rateofsucc": 93.57,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1487174400000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 4, "date": 16 }
+}, {
+    "succ": 0,
+    "rateofincr": 17.78,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1487174400000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 4, "date": 16 }
+}, {
+    "succ": 2955,
+    "rateofincr": 8.22,
+    "fail": 243,
+    "rateofsucc": 92.4,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1487260800000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 5, "date": 17 }
+}, {
+    "succ": 0,
+    "rateofincr": 8.22,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1487260800000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 5, "date": 17 }
+}, {
+    "succ": 3045,
+    "rateofincr": 2.6,
+    "fail": 236,
+    "rateofsucc": 92.81,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1487347200000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 6, "date": 18 }
+}, {
+    "succ": 0,
+    "rateofincr": 2.6,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1487347200000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 6, "date": 18 }
+}, {
+    "succ": 0,
+    "rateofincr": -19.75,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1487433600000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 0, "date": 19 }
+}, {
+    "succ": 2441,
+    "rateofincr": -19.75,
+    "fail": 192,
+    "rateofsucc": 92.71,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1487433600000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 0, "date": 19 }
+}, {
+    "succ": 2453,
+    "rateofincr": -0.42,
+    "fail": 169,
+    "rateofsucc": 93.55,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1487520000000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 1, "date": 20 }
+}, {
+    "succ": 0,
+    "rateofincr": -0.42,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1487520000000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 1, "date": 20 }
+}, {
+    "succ": 2560,
+    "rateofincr": 6.64,
+    "fail": 236,
+    "rateofsucc": 91.56,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1487606400000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 2, "date": 21 }
+}, {
+    "succ": 0,
+    "rateofincr": 6.64,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1487606400000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 2, "date": 21 }
+}, {
+    "succ": 0,
+    "rateofincr": -1.5700000000000003,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1487692800000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 3, "date": 22 }
+}, {
+    "succ": 2546,
+    "rateofincr": -1.5700000000000003,
+    "fail": 206,
+    "rateofsucc": 92.51,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1487692800000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 3, "date": 22 }
+}, {
+    "succ": 2114,
+    "rateofincr": -18.02,
+    "fail": 142,
+    "rateofsucc": 93.71,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1487779200000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 4, "date": 23 }
+}, {
+    "succ": 0,
+    "rateofincr": -18.02,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1487779200000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 4, "date": 23 }
+}, {
+    "succ": 2111,
+    "rateofincr": -0.49,
+    "fail": 134,
+    "rateofsucc": 94.03,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1487865600000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 5, "date": 24 }
+}, {
+    "succ": 0,
+    "rateofincr": -0.49,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1487865600000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 5, "date": 24 }
+}, {
+    "succ": 0,
+    "rateofincr": 1.92,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1487952000000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 6, "date": 25 }
+}, {
+    "succ": 2148,
+    "rateofincr": 1.92,
+    "fail": 140,
+    "rateofsucc": 93.88,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1487952000000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 6, "date": 25 }
+}, {
+    "succ": 1804,
+    "rateofincr": -2.75,
+    "fail": 421,
+    "rateofsucc": 81.08,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1488038400000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 0, "date": 26 }
+}, {
+    "succ": 0,
+    "rateofincr": -2.75,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1488038400000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 0, "date": 26 }
+}, {
+    "succ": 971,
+    "rateofincr": -53.89000000000001,
+    "fail": 55,
+    "rateofsucc": 94.64,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1488124800000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 1, "date": 27 }
+}, {
+    "succ": 0,
+    "rateofincr": -53.89000000000001,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1488124800000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 1, "date": 27 }
+}, {
+    "succ": 3,
+    "rateofincr": -99.12,
+    "fail": 6,
+    "rateofsucc": 33.33,
+    "custName": "胡莱",
+    "date": { "nanos": 0, "time": 1488211200000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 2, "date": 28 }
+}, {
+    "succ": 0,
+    "rateofincr": -99.12,
+    "fail": 0,
+    "rateofsucc": 0,
+    "custName": "数米科技",
+    "date": { "nanos": 0, "time": 1488211200000, "minutes": 0, "seconds": 0, "hours": 0, "month": 1, "year": 117, "timezoneOffset": -480, "day": 2, "date": 28 }
+}]

@@ -1,0 +1,168 @@
+<div class="container" ng-controller="role">
+    <h3>角色表：</h3>
+    <!--下面是添加 和 搜索-->
+    <br/>
+    <div class="row">
+        <button type="button" class="btn btn-success col-lg-1 butt-add" data-toggle="modal" data-target="#myModal">
+            <span class="glyphicon glyphicon-plus-sign glyphicon-lg"></span> 添加
+        </button>
+        <span class=" col-lg-offset-3 col-lg-2">
+            <label>角色名：</label>
+            <input type="text" class="form-control" ng-model="searchList.roleName" placeholder="搜索……">
+        </span>
+        <span class="col-lg-2">
+            <label>状态：</label>
+            <select class="form-control" id="status" ng-model="searchList.status">
+                <option value="">--请选择--</option>
+                <option value="V">有效</option>
+                <option value="I">无效</option>
+                <option value="T">过期</option>
+            </select>
+        </span>
+        <br/>
+        <span class="col-lg-1">
+          <button class="btn btn-default" ng-click="search()" type="button"><a href="" class="glyphicon glyphicon-search">搜索</a></button>
+        </span>
+    </div>
+    <br/>
+    <!--下面是添加弹出框的页面-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <form class="modal-content" role="form" name="signForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel11">请输入</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">角色名</span>
+                        </div>
+                        <input type="text" class="form-control" name="roleName" ng-model="functionSys_addForm.roleName" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signForm.roleName.$error.required&&signForm.roleName.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">状态</span>
+                        </div>
+                        <select class="form-control" name="status" ng-model="functionSys_addForm.status" required>
+                            <option name="select" ng-repeat="(key,value) in status" value="{{key}}">{{value}}</option>
+                        </select>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signForm.status.$error.required&&signForm.status.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">保证</span>
+                        </div>
+                        <input type="text" class="form-control" name="commit" ng-model="functionSys_addForm.commit" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signForm.commit.$error.required&&signForm.commit.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="reset" class="btn btn-info" ng-click="functionSys_roleTdadd()">确认</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--下面是角色修改弹出框的页面-->
+    <div class="modal fade" id="myModarevise" tabindex="-1" role="dialog" aria-labelledby="myModalLabelrevise" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel1revise">请输入</h4>
+                </div>
+                <form class="modal-body" name="Myform">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">角色名</button>
+                        </div>
+                        <input type="text" class="form-control" name="roleName" ng-model="functionSys_roleForm.roleName" required>
+                        <!--ng-value是输入框的默认值，ng-model是获取输入框的值-->
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">状态</button>
+                        </div>
+                        <select class="form-control" ng-model="functionSys_roleForm.status">
+                            <option value="V">有效</option>
+                            <option value="I">无效</option>
+                            <option value="T">过期</option>
+                        </select>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">保证</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="functionSys_roleForm.commit">
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" ng-disabled="Myform.$pristine;" ng-click="functionSys_revise()" data-dismiss="modal">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--下面是角色表格-->
+    <table class="table table-striped">
+        <tr>
+            <th>序号:</th>
+            <th>角色名:</th>
+            <th>状态:</th>
+            <th>状态日期:</th>
+            <th>保证:</th>
+            <th>操作:</th>
+        </tr>
+        <tr ng-repeat="data in TdItem">
+            <td>{{$index+1}}</td>
+            <td>{{data.roleName}}</td>
+            <td ng-switch on="data.status">
+                <span ng-switch-when="V">有效</span>
+                <span ng-switch-when="I">无效</span>
+                <span ng-switch-when="T">过期</span>
+            </td>
+            <td ng-bind="data.statusDate.time|date:'yyyy-MM-dd  hh:mm:ss'"></td>
+            <!--//"status_date": "1477634049000"的值是年月日时分秒转换来的-->
+            <td>{{data.commit}}</td>
+            <td>
+                <input type="button" class="btn btn-danger" value="删除" ng-click='deleteTd({{data.roleId}})'>
+                <!--删除当前行-->
+                <input type="button" class="btn btn-warning" value="修改" ng-click='reviseTd({{$index}})' data-toggle="modal" data-target="#myModarevise">
+                <!--修改当前行-->
+            </td>
+        </tr>
+    </table>
+    <nav>
+        <ul class="pagination paging pull-right">
+            <li>
+                <a ng-click="Previous()">
+                    <span>上一页</span>
+                </a>
+            </li>
+            <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                <a ng-click="selectPage(page)">{{ page }}</a>
+            </li>
+            <li>
+                <a ng-click="Next()">
+                    <span>下一页</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

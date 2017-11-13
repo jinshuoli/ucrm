@@ -1,0 +1,248 @@
+<div class="container" ng-controller="TemplateManagement">
+    <h3>模板管理:</h3>
+    <hr/>
+    <div class="row">
+        <button type="button" class="btn btn-success col-lg-1 butt-add" data-toggle="modal" data-target="#myModal">
+            <span class="glyphicon glyphicon-plus-sign glyphicon-lg"></span> 添加
+        </button>
+        <span class=" col-lg-offset-5 col-lg-2">
+            <label>成员名称：</label>
+            <input type="text" ng-model="search" class="form-control" placeholder="搜索……" />
+        </span>
+        <br>
+        <span class="col-lg-1">
+          <button class="btn btn-default" ng-click="search()" type="button"><a href="" class="glyphicon glyphicon-search">搜索</a></button>
+        </span>
+    </div>
+    <br>
+    <div style="overflow:scroll; height:450px; width: 1100px;">
+        <table class="table table-responsive">
+            <tr class="bg-info">
+                <th>ID</th>
+                <th>日期</th>
+                <th>签名</th>
+                <th>模板类型</th>
+                <th>模板内容</th>
+                <th>参数</th>
+                <th>描述</th>
+                <th>操作</th>
+            </tr>
+            <tr ng-repeat="list in TemplateManagementTD">
+                <td ng-bind="list.id"></td>
+                <td ng-bind="list.time"></td>
+                <td ng-bind="list.signature"></td>
+                <td ng-bind="list.msgtype"></td>
+                <td ng-bind="list.templateContent"></td>
+                <td ng-bind="list.variable"></td>
+                <td ng-bind="list.description"></td>
+                <td>
+                    <input type="button" class="btn btn-danger" value="删除" ng-click="Delete($index)">
+                    <!--删除当前行-->
+                    <input type="button" class="btn btn-warning" ng-click="modifyTpl($index)" data-toggle="modal" data-target="#myModal1" value="修改">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--下面是添加弹出框的页面-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" role="form" name="signUpForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">添加模板</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">ID</span>
+                        </div>
+                        <input type="text" class="form-control" name="id" ng-model="tplAddForm.id" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.id.$error.required&&signUpForm.id.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">日期</span>
+                        </div>
+                        <input type="text" class="form-control" name="time" ng-model="tplAddForm.time" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.time.$error.required&&signUpForm.time.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">签名</span>
+                        </div>
+                        <input type="text" class="form-control" name="signature" ng-model="tplAddForm.signature" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.signature.$error.required&&signUpForm.signature.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">模板类型</span>
+                        </div>
+                        <select name="msgtype" class="form-control" ng-model="tplAddForm.msgtype" required>
+                            <option value="4">闪信模板</option>
+                            <option value="6">短信模板</option>
+                        </select>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.msgtype.$error.required&&signUpForm.msgtype.$touched">
+                                必选项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">模板内容</span>
+                        </div>
+                        <textarea rows="6" name="templateContent" ng-model="tplAddForm.templateContent" class="form-control" ng-maxlength="62" placeholder="模板内容，最终投递内容中，固定内容+可变内容的总长度不得超过62个字符（含标点符号）。模板内容中可变变量用特殊字符标识，可变内容填写方式：[#*#];模板内容举例：尊敬的#*#用户，您好，欢迎致电#*#。模板内容中， 可变变量数量不超过4个: ">
+                        </textarea required>
+                        <span class="text-danger">
+                        {{0 + tplAddForm.templateContent.length}} / 62 字</span>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.templateContent.$error.required&&signUpForm.templateContent.$touched">
+                                必选项！</p>
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.templateContent.$error.maxlength&&signUpForm.templateContent.$touched">内容长度不多于62位</p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">参数</span>
+                        </div>
+                        <input type="text" class="form-control" name="variable" ng-model="tplAddForm.variable" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.variable.$error.required&&signUpForm.variable.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">描述</span>
+                        </div>
+                        <input type="text" class="form-control" name="description" ng-model="tplAddForm.description" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.description.$error.required&&signUpForm.description.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-info" ng-click="AddTpl()" data-dismiss="modal">保存</button>
+                    </div>
+            </form>
+            </div>
+        </div>
+    </div>
+    <!--下面是修改弹出框的页面-->
+    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" role="form" name="modifyForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">修改模板</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">ID</span>
+                        </div>
+                        <input type="text" class="form-control" name="id" ng-model="tplModifyForm.id" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="modifyForm.id.$error.required&&modifyForm.id.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">日期</span>
+                        </div>
+                        <input type="text" class="form-control" name="time" ng-model="tplModifyForm.time" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="modifyForm.time.$error.required&&modifyForm.time.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">签名</span>
+                        </div>
+                        <input type="text" class="form-control" name="signature" ng-model="tplModifyForm.signature" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="modifyForm.signature.$error.required&&modifyForm.signature.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">模板类型</span>
+                        </div>
+                        <select name="msgtype" class="form-control" ng-model="tplModifyForm.msgtype" required>
+                            <option value="4">闪信模板</option>
+                            <option value="6">短信模板</option>
+                        </select>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="modifyForm.msgtype.$error.required&&modifyForm.msgtype.$touched">
+                                必选项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">模板内容</span>
+                        </div>
+                        <textarea rows="6" name="templateContent" ng-model="tplModifyForm.templateContent" class="form-control" ng-maxlength="62" placeholder="模板内容，最终投递内容中，固定内容+可变内容的总长度不得超过62个字符（含标点符号）。模板内容中可变变量用特殊字符标识，可变内容填写方式：[#*#];模板内容举例：尊敬的#*#用户，您好，欢迎致电#*#。模板内容中， 可变变量数量不超过4个: ">
+                        </textarea required>
+                        <span class="text-danger">
+                        {{0 + tplModifyForm.templateContent.length}} / 62 字</span>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="modifyForm.templateContent.$error.required&&modifyForm.templateContent.$touched">
+                                必选项！</p>
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="modifyForm.templateContent.$error.maxlength&&modifyForm.templateContent.$touched">内容长度不多于62位</p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">参数</span>
+                        </div>
+                        <input type="text" class="form-control" name="variable" ng-model="tplModifyForm.variable" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="modifyForm.variable.$error.required&&modifyForm.variable.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">描述</span>
+                        </div>
+                        <input type="text" class="form-control" name="description" ng-model="tplModifyForm.description" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="modifyForm.description.$error.required&&modifyForm.description.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-info" ng-click="modifyTplOk()" data-dismiss="modal">保存</button>
+                    </div>
+              </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,315 @@
+<div class="container row" ng-controller="member">
+    <h3>成员管理</h3>
+    <hr/>
+    <div class="row">
+        <button type="button" class="btn btn-success col-lg-1 butt-add" data-toggle="modal" data-target="#myModal">
+            <span class="glyphicon glyphicon-plus-sign glyphicon-lg"></span> 添加
+        </button>
+        <span class=" col-lg-offset-3 col-lg-2">
+            <label>成员名称：</label>
+            <input type="text" ng-model="searchForm.name" class="form-control" placeholder="搜索……" />
+        </span>
+        <span class="col-lg-2">
+            <label>真实号码：</label>
+            <input type="text" ng-model="searchForm.prtms" class="form-control" placeholder="搜索……" />
+        </span>
+        <span class="col-lg-2">
+            <label>隐私号码：</label>
+            <input type="text" ng-model="searchForm.acms" class="form-control" placeholder="搜索……" />
+        </span>
+        <br/>
+        <span class="col-lg-1">
+          <button class="btn btn-default" ng-click="search()" type="button"><a href="" class="glyphicon glyphicon-search">搜索</a></button>
+        </span>
+    </div>
+    <br/>
+    <table class="table table-bordered">
+        <tr class="bg-info">
+            <th>成员名称</th>
+            <th>真实号码</th>
+            <th>证件类型</th>
+            <th>证件号码</th>
+            <th>隐私号</th>
+            <th>Email</th>
+            <th>创建日期</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="list in TdItem">
+            <td>{{list.name}}</td>
+            <td>{{list.prtms}}</td>
+            <td ng-switch on="list.certType">
+                <span ng-switch-when="1">身份证</span>
+                <span ng-switch-when="2">驾驶证</span>
+                <span ng-switch-when="3">军人证</span>
+                <span ng-switch-when="4">商业执照</span>
+                <span ng-switch-when="5">其他</span>
+            </td>
+            <td>{{list.certNumber}}</td>
+            <td>{{list.acms}}</td>
+            <td>{{list.email}}</td>
+            <td>{{list.createDate.time|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>
+                <input type="button" class="btn btn-danger" ng-click="memberDelete(list.memberId)" value="删除">
+                <!--删除当前行-->
+                <input type="button" class="btn btn-warning" ng-click="Revise($index)" data-toggle="modal" data-target="#myModalRevise" value="修改">
+                <input type="button" class="btn btn-info" value="详细信息" ng-click=info($index,list.custId)>
+            </td>
+        </tr>
+    </table>
+    <!--下面是分页-->
+    <nav>
+        <ul class="pagination paging pull-right">
+            <li>
+                <a ng-click="Previous()">
+                    <span>上一页</span>
+                </a>
+            </li>
+            <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                <a ng-click="selectPage(page)">{{ page }}</a>
+            </li>
+            <li>
+                <a ng-click="Next()">
+                    <span>下一页</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!--下面是鼠标放上显示客户详细信息-->
+    <div class="modal" id="infomodal">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <table class="table table-bordered bg-info triangle-right">
+                <tr>
+                    <th>成员名称</th>
+                    <th>所属客户</th>
+                    <th>客户编码</th>
+                    <th>地址</th>
+                    <th>电话</th>
+                    <th>客户类型</th>
+                </tr>
+                <tr ng-repeat="list in memberInfoTd">
+                    <td ng-model="MemberName">{{MemberName}}</td>
+                    <td>{{list.name}}</td>
+                    <td>{{list.code}}</td>
+                    <td>{{list.address}}</td>
+                    <td>{{list.phone}}</td>
+                    <td ng-switch on="list.type">
+                        <span ng-switch-when="AP">代理客户有自营平台</span>
+                        <span ng-switch-when="AN">代理客户无自营平台</span>
+                        <span ng-switch-when="DP">直客有自营平台</span>
+                        <span ng-switch-when="DN">直客无自营平台</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!--下面是添加弹出框的页面-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <form class="modal-content" role="form" name="signUpForm">
+                <!--背景、边框、阴影-->
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel11">添加成员</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">成员名称</span>
+                        </div>
+                        <input type="text" class="form-control" name="name" ng-model="memberAddForm.name" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.name.$error.required&&signUpForm.name.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">真实号码</span>
+                        </div>
+                        <input type="text" class="form-control" name="prtms" ng-model="memberAddForm.prtms" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.prtms.$error.required&&signUpForm.prtms.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">证件类型</span>
+                        </div>
+                        <select name="certType" class="form-control" ng-model="memberAddForm.certType" required>
+                            <option value="1">身份证</option>
+                            <option value="2">驾驶证 </option>
+                            <option value="3">军人证</option>
+                            <option value="4">商业执照</option>
+                            <option value="5">其他</option>
+                        </select>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.certType.$error.required&&signUpForm.certType.$touched">
+                                必选项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">证件号码</span>
+                        </div>
+                        <input type="text" class="form-control" name="certNumber" ng-model="memberAddForm.certNumber" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.certNumber.$error.required&&signUpForm.certNumber.$touched">
+                                必选项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">证件图片</span>
+                        </div>
+                        <input type="file" class="form-control" ng-model="memberAddForm.cert_photo_path" ng-file-select="onFileSelect($files)">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">隐私号码</span>
+                        </div>
+                        <input type="text" class="form-control" name="acms" ng-model="memberAddForm.acms" required>
+                        <div class="input-group-btn" ng-click="getSecretNo()">
+                            <span class="btn btn-default">获取隐私号</span>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">Email</span>
+                        </div>
+                        <input type="text" class="form-control" name="email" ng-model="memberAddForm.email" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.email.$error.required&&signUpForm.email.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">客户名称</span>
+                        </div>
+                        <select name="custId" class="form-control" ng-model="memberAddForm.custId" required>
+                            <option ng-repeat="(key,value) in name" value="{{key}}">{{value}}</option>
+                        </select>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.custId.$error.required&&signUpForm.custId.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">App密码</span>
+                        </div>
+                        <input name="appPwd" type="password" style="display:none">
+                        <input name="appPwd" type="password" class="form-control" ng-model="memberAddForm.appPwd" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.appPwd.$error.required&&signUpForm.appPwd.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" ng-click="AddMemberForm()" data-dismiss="modal">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--下面是修改弹出框的页面-->
+    <div class="modal fade" id="myModalRevise" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabe">请输入</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">成员名称</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="memberUpdateForm.name">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">真实号码</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="memberUpdateForm.prtms">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">证件类型</button>
+                        </div>
+                        <select name="" class="form-control" ng-model="memberUpdateForm.certType">
+                            <option value="1">Identity Card</option>
+                            <option value="2">Driving License </option>
+                            <option value="3">Army Identity Card</option>
+                            <option value="4">Business License</option>
+                            <option value="5">Other</option>
+                        </select>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">证件号码</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="memberUpdateForm.certNumber">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">证件图片</button>
+                        </div>
+                        <input type="file" class="form-control" ng-model="memberUpdateForm.cert_photo_path">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">隐私号码</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="memberUpdateForm.acms">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">Email</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="memberUpdateForm.email">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">客户名称</button>
+                        </div>
+                        <input type="text" class="form-control" ng-repeat="(key,value) in custName" value={{value}} ng-disabled="true">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">App密码</span>
+                        </div>
+                        <input type="password" class="form-control" ng-model="memberUpdateForm.appPwd">
+                    </div>
+                    <br/>
+                </div>
+                <br/>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" ng-click="memberUpdate()" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+﻿.page {
+    transition: all 0.3s linear;
+    position: absolute;
+    /*width: 100%;*/
+    overflow-x: hidden;
+    /*z-index: -3;*/
+}
+
+/*要离开的ngView元素动画开始时的样式*/
+.page.ng-leave {
+	display: none;
+}
+
+/*要离开的ngView元素动画结束时的样式*/
+.page.ng-leave.ng-leave-active {
+	display: none;
+}
+
+/*要进入的ngView元素动画开始时的样式*/
+.page.ng-enter {
+    left: 15%;
+}
+
+/*要进入的ngView元素动画结束时的样式*/
+.page.ng-enter.ng-enter-active {
+    left: 0;
+}

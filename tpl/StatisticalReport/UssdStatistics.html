@@ -1,0 +1,97 @@
+<div class="container" ng-controller="UssdStatistics">
+    <div class="row">
+        <h3 class="col-lg-3">
+               USSD发送数据统计：
+        </h3>
+        <br>
+        <span class="col-lg-2">
+        <label>导出方式：</label>
+           <select class="form-control" id="selectedUssdStatistics">
+               <option value="xls">导出Excel</option>
+               <option value="csv">导出CSV</option>
+               <option value="txt">导出TXT</option>
+               <option value="json">导出JSON</option>
+           </select>
+           </span>
+           <span class="col-lg-1">
+           <button class="btn btn-success" style="margin-top: 20px;" id="exportUssdStatistics">导出</button>
+        </span>
+      <span class="col-lg-2">
+             <label>查询方式：</label>
+             <select class="form-control" id="func" ng-model="m" ng-change="changes(m)" required>
+                    <option value="">按天查询</option>
+                    <option value="Y">按月查询</option>
+                </select>
+     </span>
+        <span class="col-lg-2">
+                <label class="seachFunc">按天份查询：</label>
+               <input id="seachFunc" ng-model="SearchForm.month" class="form-control" onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd',onpicked: function(){$(this).trigger('change')}} )"
+                placeholder="搜索……" />
+        </span>
+        <br/>
+        <span class="col-lg-1">
+              <button class="btn btn-default" type="button" ng-click="UssdStatisSerach()">
+                  <a href="" class="glyphicon glyphicon-search">搜索</a>
+              </button>
+        </span>
+    </div>
+    <br />
+    <div id="loading">
+        <div class="sk-fading-circle">
+        <div class="sk-circle1 sk-circle"></div>
+        <div class="sk-circle2 sk-circle"></div>
+        <div class="sk-circle3 sk-circle"></div>
+        <div class="sk-circle4 sk-circle"></div>
+        <div class="sk-circle5 sk-circle"></div>
+        <div class="sk-circle6 sk-circle"></div>
+        <div class="sk-circle7 sk-circle"></div>
+        <div class="sk-circle8 sk-circle"></div>
+        <div class="sk-circle9 sk-circle"></div>
+        <div class="sk-circle10 sk-circle"></div>
+        <div class="sk-circle11 sk-circle"></div>
+        <div class="sk-circle12 sk-circle"></div>
+      </div>
+      <h3>请稍等，数据加载中……</h3>
+    </div>
+    <div style="overflow:scroll; height:450px; width: 1100px;">
+        <table class="table table-responsive" id="tableUssdStatistics">
+            <tr class="bg-info">
+                <th>日期</th>
+                <th>客户名称</th>
+                <th>发送总数</th>
+                <th>发送成功总数</th>
+                <th>移动发送数</th>
+                <th>移动成功数</th>
+                <th>联通发送数</th>
+                <th>联通成功数</th>
+                <th>电信发送数</th>
+                <th>电信成功数</th>
+            </tr>
+            <tr ng-repeat="list in UssdToTD">
+                <td ng-bind="list.date"></td>
+                <td ng-bind="list.name"></td>
+                <td ng-bind="list.total"></td>
+                <td ng-bind="list.succtotal"></td>
+                <td ng-bind="list.mobiletotal"></td>
+                <td ng-bind="list.mobilesucc"></td>
+                <td ng-bind="list.unicomtotal"></td>
+                <td ng-bind="list.unicomsucc"></td>
+                <td ng-bind="list.telecomtotal"></td>
+                <td ng-bind="list.telecomsucc"></td>
+               
+            </tr>
+            <tr ng-repeat="list in UssdToTD">
+                <td>总计：</td>
+                <td></td>
+                <td ng-bind="list.sendTotal"></td>
+                <td ng-bind="list.succTotal"></td>
+                <td ng-bind="list.mobileTotalByMonth"></td>
+                <td ng-bind="list.mobileSuccByMonth"></td>
+                <td ng-bind="list.unicomTotalByMonth"></td>
+                <td ng-bind="list.unicomSuccByMonth"></td>
+                <td ng-bind="list.teleTotalByMonth"></td>
+                <td ng-bind="list.telecomSuccByMonth"></td>
+            </tr>
+        </table>
+    </div>
+</div>

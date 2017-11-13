@@ -1,0 +1,340 @@
+<div class="container row" ng-controller="customer">
+    <h3>客户列表</h3>
+    <hr/>
+    <div class="row">
+        <button type="button" class="btn btn-success col-lg-1 butt-add" data-toggle="modal" data-target="#myModalAdd">
+            <span class="glyphicon glyphicon-plus-sign glyphicon-lg"></span> 添加
+        </button>
+        <span class=" col-lg-offset-3 col-lg-3">
+            <label>客户名称：</label>
+            <input type="text" class="form-control" ng-model="searchList.custName" placeholder="搜索……">
+        </span>
+        <span class="col-lg-3">
+            <label>客户类型：</label>
+            <select class="form-control" ng-model="searchList.custType" placeholder="搜索……">
+               <option value="" >——请选择——</option>
+               <option value="AP">代理客户有自营平台</option>
+               <option value="AN">代理客户无自营平台</option>
+               <option value="DP">直客有自营平台</option>
+               <option value="DN">直客无自营平台</option>
+            </select>
+        </span>
+        <br>
+        <span class="col-lg-1">
+          <button class="btn btn-default" type="button" ng-click="search()"><a href="" class="glyphicon glyphicon-search">搜索</a></button>
+        </span>
+    </div>
+    <br/>
+    <table class="table table-bordered">
+        <tr class="bg-info">
+            <th>序号</th>
+            <th>客户名称</th>
+            <th>客户编号</th>
+            <th>客户类型</th>
+            <th>账户状态</th>
+            <th>客户标识</th>
+            <th>地址</th>
+            <th>联系人</th>
+            <th>联系方式</th>
+            <th>创建时间</th>
+            <th>订购类型</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="data in TdItem">
+            <td>{{$index+1}}</td>
+            <td>{{data.name}}</td>
+            <td>{{data.code}}</td>
+            <td ng-switch on="data.type">
+                <span ng-switch-when="AP">代理客户有自营平台</span>
+                <span ng-switch-when="AN">代理客户无自营平台</span>
+                <span ng-switch-when="DP">直客有自营平台</span>
+                <span ng-switch-when="DN">直客无自营平台</span>
+            </td>
+            <td ng-switch on="data.status">
+                <span ng-switch-when="V">有效</span>
+                <span ng-switch-when="I">无效</span>
+                <span ng-switch-when="T">注销</span>
+            </td>
+            <td>{{data.appkey}}</td>
+            <td>{{data.address}}</td>
+            <td>{{data.linkman}}</td>
+            <td>{{data.phone}}</td>
+            <td>{{data.createTime.time|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td ng-switch on="data.setSubsMode">
+                <span ng-switch-when="1">AX</span>
+                <span ng-switch-when="2">AXB</span>
+                <span ng-switch-when="3">AXYB</span>
+            </td>
+            <td>
+                <input type="button" class="btn btn-danger" value="删除" ng-click='deleteTd({{data.custId}})'>
+                <!--删除当前行-->
+                <input type="button" class="btn btn-warning" value="修改" ng-click="updateTd($index)" data-toggle="modal" data-target="#myModarevisestysem">
+            </td>
+        </tr>
+    </table>
+    <!--下面是弹出框添加的页面-->
+    <div class="modal fade" id="myModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAdd" aria-hidden="true">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <form class="modal-content" role="form" name="signUpForm">
+                <!--背景、边框、阴影-->
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel11">创建客户</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">客户名称</span>
+                        </div>
+                        <input type="text" class="form-control" name="name" ng-model="customerForm.name" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.name.$error.required&&signUpForm.name.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">客户编号</span>
+                        </div>
+                        <input type="text" class="form-control" name="code" ng-model="customerForm.code" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.code.$error.required&&signUpForm.code.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">客户类型</span>
+                        </div>
+                        <select name="type" class="form-control" ng-model="customerForm.type" required>
+                            <option value="">——请选择——</option>
+                            <option value="AP">代理客户有自营平台</option>
+                            <option value="AN">代理客户无自营平台</option>
+                            <option value="DP">直客有自营平台</option>
+                            <option value="DN">直客无自营平台</option>
+                        </select>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.type.$error.required&&signUpForm.type.$touched">
+                                请选择！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">客户标识AppKey</span>
+                        </div>
+                        <input type="text" class="form-control" ng-model="customerForm.appkey" name="appkey" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.appkey.$error.required&&signUpForm.appkey.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">地址</span>
+                        </div>
+                        <input type="text" class="form-control" ng-model="customerForm.address" name="address" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.address.$error.required&&signUpForm.address.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">联系方式</span>
+                        </div>
+                        <input type="text" class="form-control" ng-model="customerForm.phone" name="phone" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.phone.$error.required&&signUpForm.phone.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">联系人</span>
+                        </div>
+                        <input type="text" class="form-control" ng-model="customerForm.linkman" name="linkman" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.linkman.$error.required&&signUpForm.linkman.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">Email</span>
+                        </div>
+                        <input type="text" class="form-control" ng-model="customerForm.email" name="email" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.email.$error.required&&signUpForm.email.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">充值类型：</span>
+                        </div>
+                        <select name="subs" class="form-control" ng-model="customerForm.customertype" required>
+                            <option value="">——请选择——</option>
+                            <option value="voice">小号</option>
+                            <option value="sms">短信</option>
+                            <option value="ussd">USSD</option>
+                        </select>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.customertype.$error.required&&signUpForm.customertype.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+
+                    <div ng-if="customerForm.customertype == 'voice'">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">上传营业执照</span>
+                        </div>
+                        <input type="file" name="businessLicence" class="form-control" ng-file-select="onFileSelect($files)">
+                    </div>
+                    <br/>
+                    <div class="top-right">
+                        <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.type.$error.required&&signUpForm.type.$touched">
+                            请选择！</p>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">隐私号订购类型</span>
+                        </div>
+                        <select name="subs" class="form-control" ng-model="customerForm.setSubsMode" required>
+                            <option value="">——请选择——</option>
+                            <option value="1">AX</option>
+                            <option value="2">AXB</option>
+                            <option value="3">AXYB</option>
+                        </select>
+                    </div>
+                    <br/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="customerTdadd()">确认</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--下面是修改弹出框的页面-->
+    <div class="modal fade" id="myModarevisestysem" tabindex="-1" role="dialog" aria-labelledby="myModarevisestysem" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel1revise">请输入</h4>
+                </div>
+                <form class="modal-body" name="Myform">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">客户名称</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="customerForm.name" required>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">客户编号</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="customerForm.code" required>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">客户类型</button>
+                        </div>
+                        <select name="" class="form-control" ng-model="customerForm.type" required>
+                            <option value="">——请选择——</option>
+                            <option value="AP">代理客户有自营平台</option>
+                            <option value="AN">代理客户无自营平台</option>
+                            <option value="DP">直客有自营平台</option>
+                            <option value="DN">直客无自营平台</option>
+                        </select>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">客户标识AppKey</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="customerForm.appkey" required>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">地址</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="customerForm.address" required>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">联系方式</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="customerForm.phone" required>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">联系人</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="customerForm.linkman" required>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">Email</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="customerForm.email" required>
+                    </div>
+                    <br/>
+
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">客户类型</button>
+                        </div>
+                        <select name="" class="form-control" ng-model="customerForm.setSubsMode" required>
+                            <option value="">——请选择——</option>
+                            <option value="1">AX</option>
+                            <option value="2">AXB</option>
+                            <option value="3">AXYB</option>
+                        </select>
+                    </div>
+                    <br/>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" ng-disabled="Myform.$pristine;" ng-click="customerUpdate()" data-dismiss="modal">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--下面是分页-->
+    <nav>
+        <ul class="pagination paging pull-right">
+            <li>
+                <a ng-click="Previous()">
+                    <span>上一页</span>
+                </a>
+            </li>
+            <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                <a ng-click="selectPage(page)">{{ page }}</a>
+            </li>
+            <li>
+                <a ng-click="Next()">
+                    <span>下一页</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

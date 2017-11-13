@@ -1,0 +1,251 @@
+<div class="container row" ng-controller="parameter">
+    <h3>参数管理</h3>
+    <hr/>
+    <div class="row">
+        <button type="button" class="btn btn-success col-lg-1 butt-add" data-toggle="modal" data-target="#parameterAdd">
+            <span class="glyphicon glyphicon-plus-sign glyphicon-lg"></span>添加
+        </button>
+        <span class="col-lg-offset-5 col-lg-2">
+            <label>参数名称：</label>
+            <input type="text" ng-model="parameterSearch.attrName" class="form-control" placeholder="搜索……">
+        </span>
+        <span class="col-lg-2">
+            <label>参数编号：</label>
+            <input type="text" ng-model="parameterSearch.attrCode" class="form-control" placeholder="搜索……">
+        </span>
+        <br/>
+        <span class="col-lg-1">
+          <button class="btn btn-default" ng-click="ParameterSearch()" type="button"><a href="" class="glyphicon glyphicon-search">搜索</a></button>
+        </span>
+    </div>
+    <!--下面是资费计划表的表格-->
+    <table class="table table-bordered">
+        <h3>参数列表:</h3>
+        <tr class="bg-info">
+            <th>选项</th>
+            <th>序号</th>
+            <th>参数名称</th>
+            <th>参数编号</th>
+            <th>参数描述</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="list in TdItem">
+            <td>
+                <input type="radio" name="attrId" ng-value="list.attrId" ng-click="withinParameter(list.attrId)">
+            </td>
+            <td ng-bind="$index+1"></td>
+            <td ng-bind="list.attrName"></td>
+            <td ng-bind="list.attrCode"></td>
+            <td ng-bind="list.comments"></td>
+            <td>
+                <input type="button" class="btn btn-danger" value="删除" ng-click='deleteParameter(list.attrId)'>
+                <!--删除当前行-->
+                <input type="button" class="btn btn-warning" value="修改" ng-click="ReviseParameter($index)" data-toggle="modal" data-target="#ParameterRevise">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#ParADD" data-toggle="modal" data-target="#ParADD" ng-click="ParameterADD(list.attrId)">
+                    <span class="glyphicon glyphicon-plus-sign glyphicon-lg"></span>&nbsp;&nbsp;参数值</button>
+            </td>
+        </tr>
+    </table>
+    <!--下面是添加资费弹出框的页面-->
+    <div class="modal fade" id="parameterAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <form class="modal-content" role="form" name="signUpForm">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:white">&times;</span></button>
+                    <h4 class="modal-title" id="parameteAdd">添加参数</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">名称</span>
+                        </div>
+                        <input type="text" class="form-control" name="name" ng-model="parameterAddForm.name" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.name.$error.required&&signUpForm.name.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">编号</span>
+                        </div>
+                        <input type="text" class="form-control" name="code" ng-model="parameterAddForm.code" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.code.$error.required&&signUpForm.code.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <span class="btn btn-default">描述</span>
+                        </div>
+                        <input type="text" class="form-control" name="comments" ng-model="parameterAddForm.comments" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signUpForm.comments.$error.required&&signUpForm.comments.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" ng-click="parameterTdOK()" data-dismiss="modal">确认</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--下面是修改资费弹出框的页面-->
+    <div class="modal fade" id="ParameterRevise" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <div class="modal-content">
+                <!--背景、边框、阴影-->
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myM">添加参数值</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">名称</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="parameterReviseForm.attrName">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">编号</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="parameterReviseForm.attrCode">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">描述</button>
+                        </div>
+                        <textarea type="text" class="form-control" ng-model="parameterReviseForm.comments"> </textarea>
+                    </div>
+                    <br/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" ng-click="parameterReviseTd()" data-dismiss="modal">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--下面是分页-->
+    <ul class="pagination paging pull-right">
+        <li>
+            <a ng-click="Previous()">
+                <span>上一页</span>
+            </a>
+        </li>
+        <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+            <a ng-click="selectPage(page)">{{ page }}</a>
+        </li>
+        <li>
+            <a ng-click="Next()">
+                <span>下一页</span>
+            </a>
+        </li>
+    </ul>
+    <br />
+    <!--下面是参数值列表的表格-->
+    <table class="table table-bordered">
+        <h3 class="col-lg-2">参数值列表:</h3>
+        <tr class="bg-info">
+            <th>参数值ID</th>
+            <th>参数值</th>
+            <th>参数值描述</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="list in InstTd">
+            <td ng-bind="list.id.attrValueId"></td>
+            <td ng-bind="list.value"></td>
+            <td ng-bind="list.valueMark"></td>
+            <td>
+                <input type="button" class="btn btn-danger" value="删除" ng-click='deleteInstTd(list.id.attrValueId)'>
+                <!--删除当前行-->
+                <input type="button" class="btn btn-primary" value="修改" ng-click="ReviseInstTd($index,list.attrValueId)" data-toggle="modal" data-target="#ReviseInst">
+            </td>
+        </tr>
+    </table>
+    <!--下面是添加套餐弹出框的页面-->
+    <div class="modal fade" id="ParADD" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <form class="modal-content" role="form" name="signForm">
+                <!--背景、边框、阴影-->
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="ParADD">添加参数值</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">参数值</button>
+                        </div>
+                        <input type="text" class="form-control" name="value" ng-model="ParADDForm.value" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signForm.value.$error.required&&signForm.value.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">参数描述</button>
+                        </div>
+                        <input type="text" class="form-control" name="mark" ng-model="ParADDForm.mark" required>
+                        <div class="top-right">
+                            <p class="text-danger glyphicon glyphicon-remove" ng-if="signForm.mark.$error.required&&signForm.mark.$touched">
+                                必填项！</p>
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" ng-click="ParTdOK()" data-dismiss="modal">确认</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--下面是修改资费弹出框的页面-->
+    <div class="modal fade" id="ReviseInst" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!--定位、宽高-->
+            <div class="modal-content">
+                <!--背景、边框、阴影-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="ReviseIns">请输入</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">参数值</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="ReviseInstForm.attrValue">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">描述</button>
+                        </div>
+                        <input type="text" class="form-control" ng-model="ReviseInstForm.attrValueMark">
+                    </div>
+                    <br/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" ng-click="parameterReviseTd()" data-dismiss="modal">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

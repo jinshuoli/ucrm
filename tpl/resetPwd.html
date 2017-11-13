@@ -1,0 +1,64 @@
+<div class="container" ng-controller="resetPassword">
+    <br>
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <h3 class="panel-title" style="margin-left: 50px;">修改密码</h3>
+        </div>
+        <div class="panel-body" style="margin-left: 80px;">
+            <form class="form-horizontal" role="form" name="ResetPwdForm">
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default">账户名</button>
+                    </div>
+                    <input class="form-control" type="text" name="userName"
+                    ng-model="PResetPwdForm.userName" value=""
+                    ng-minlength="11" ng-maxlength="11"
+                    ng-pattern="/^1\d{10}$/" placeholder="请输入账户名" required>
+                    <div class="top-right">
+                        <p class="glyphicon glyphicon-ok input_result text-success"
+                        ng-if="ResetPwdForm.userName.$valid"></p>
+                        <p class="text-danger glyphicon glyphicon-remove"
+                        ng-if="ResetPwdForm.userName.$error.required&&ResetPwdForm.userName.$touched">账户名不能为空！</p>
+                        <p class="text-danger glyphicon glyphicon-remove"
+                        ng-if="(ResetPwdForm.userName.$error.minlength||ResetPwdForm.userName.$error.maxlength||ResetPwdForm.userName.$error.pattern)&&ResetPwdForm.userName.$touched">请输入有效手机号!</p>
+                        <!--$touched失去焦点再做判断-->
+                    </div>
+                </div><br>
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default">密码</button>
+                    </div>
+                    <input class="form-control" type="password" name="Pwd"
+                         ng-model="PResetPwdForm.Pwd"  ng-minlength="6" ng-maxlength="28" placeholder="请输入密码" required>
+                    <div class="top-right">
+                        <p class="glyphicon glyphicon-ok input_result text-success"
+                        ng-if="ResetPwdForm.Pwd.$valid"></p>
+                        <p class="text-danger glyphicon glyphicon-remove"
+                        ng-if="ResetPwdForm.Pwd.$error.required&&ResetPwdForm.Pwd.$touched">
+                            密码不能为空！</p>
+                        <p class="text-danger glyphicon glyphicon-remove"
+                        ng-if="(ResetPwdForm.Pwd.$error.minlength||ResetPwdForm.Pwd.$error.maxlength)&&ResetPwdForm.Pwd.$touched">
+                            密码应在6—28之间！</p>
+                    </div>
+                </div>
+                <br/>
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default">确认密码</button>
+                    </div>
+                    <input class="form-control"  type="password" name="Pwd2"
+                            ng-model="PResetPwdForm.Pwd2" compare="PResetPwdForm.Pwd"
+                            placeholder="请确认密码" required>
+                    <div class="top-right">
+                        <p class="glyphicon glyphicon-ok input_result text-success" ng-if="ResetPwdForm.Pwd2.$valid"></p>
+                        <p class="text-danger glyphicon glyphicon-remove" ng-if="ResetPwdForm.Pwd2.$error.compare&&ResetPwdForm.Pwd2.$touched">
+                            两次密码输入不一致！</p>
+                    </div>
+                </div><br>
+                <input type="button" class="btn btn-primary pull-right"
+                 ng-click="postResetForm()"
+                        style="margin-right: 50px;" value="确认修改">
+            </form>
+        </div>
+    </div>
+</div>

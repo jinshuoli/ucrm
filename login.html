@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compitable" content="IE=edge,Chrome=1">
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <script src="js/jquery-2.1.4.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="icon" href="img/ico.png">
+    <title>登陆</title>
+    <script>
+        window.onload = function() {
+            var aHeight = document.documentElement.clientHeight; //可视范围的高度
+            var aWidth = document.documentElement.clientWidth;   //可视范围的宽度
+            for (var i = 1; i <= 3; i++) {
+                var oImg = document.getElementById('img' + i);
+                oImg.style.height = aHeight + 'px';
+                oImg.style.width = aWidth + 'px';
+            }
+
+        }
+    </script>
+</head>
+
+<body>
+    <!--轮播图-->
+    <div class="container-fluid" style="padding: 0;">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            <!-- Indicators 圆点-->
+            <ol class="carousel-indicators">
+                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+            </ol>
+            <!-- Wrapper for slides 图片-->
+            <div class="carousel-inner" style="background-color: #005599">
+                <div class="item active">
+                    <img src="img/banner_01.jpg" id="img1" alt="...">
+                    <div class="carousel-caption">
+                    </div>
+                </div>
+                <div class="item">
+                    <img src="img/banner_02.jpg" id="img2" alt="...">
+                    <div class="carousel-caption">
+                    </div>
+                </div>
+                <div class="item">
+                    <img src="img/banner_03.jpg" id="img3" alt="...">
+                    <div class="carousel-caption">
+                    </div>
+                </div>
+            </div>
+            <!-- Controls 左右两个箭头-->
+            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+    <!--登录注册-->
+    <div class="col-lg-offset-7 col-lg-3 kuang">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            <h4 class="modal-title" id="myModalLabel1">请登陆</h4>
+        </div>
+        <form action="sysUser_login.action" method="post" id="loginForm">
+            <div class="modal-body">
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <span class="btn btn-default">账号</span>
+                    </div>
+                    <input type="text" name="sysUser.code" id="userCode" class="form-control" placeholder="请输入账号">
+                </div>
+                <br/>
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <spam class="btn btn-default">密码</spam>
+                    </div>
+                    <input type="password" name="sysUser.password" id="userPassword" class="form-control" placeholder="请输入密码">
+                </div>
+            </div>
+            <a type="button" class="btn btn-warning btn-lg" 
+            href="http://101.200.221.216:9080/ucrm/register_toRegister.action"> 注册</a>
+            <button type="submit" class="btn btn-success btn-lg">登陆</button>
+            <a style="color: black;" class="backPwd" href="tpl/userinfo/toFindPwd.html">忘记密码？</a>
+        </form>
+    </div>
+</body>
+</html>
